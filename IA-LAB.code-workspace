@@ -1,0 +1,27 @@
+{
+  "folders": [
+    {
+      "name": "IA-LAB",
+      "path": "."
+    },
+    {
+      "name": "Workspace",
+      "path": "workspace"
+    },
+    {
+      "name": "Scripts",
+      "path": "scripts"
+    },
+    {
+      "name": "Docs",
+      "path": "docs"
+    },
+    {
+      "name": "Docker",
+      "path": "docker"
+    }
+  ],
+  "settings": {
+    "terminal.integrated.cwd": "C:\\IA-LAB"
+  }
+}

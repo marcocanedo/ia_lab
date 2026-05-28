@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant WebUI as Open WebUI container
+    participant Ollama as Ollama Windows
+    participant Model as Modelo local
+
+    WebUI->>Ollama: GET /api/tags
+    Ollama-->>WebUI: lista modelos
+    WebUI->>Ollama: POST /api/chat
+    Ollama->>Model: carregar modelo
+    Model-->>Ollama: resposta
+    Ollama-->>WebUI: mensagem

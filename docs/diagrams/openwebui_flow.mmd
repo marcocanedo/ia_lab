@@ -1,0 +1,6 @@
+flowchart TD
+    User[Usuario] --> UI[Open WebUI frontend]
+    UI --> API[Open WebUI backend]
+    API --> Config[SQLite webui.db no volume open-webui]
+    API --> OllamaAPI[Ollama API /api/chat /api/tags]
+    OllamaAPI --> Models[Modelos locais]

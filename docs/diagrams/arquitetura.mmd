@@ -1,0 +1,8 @@
+flowchart LR
+    Browser[Browser Windows] --> Local3000[127.0.0.1:3000]
+    Local3000 --> Portproxy[Windows portproxy]
+    Portproxy --> VM3000[VM ia-lab:3000]
+    VM3000 --> Docker[Docker publish]
+    Docker --> WebUI[Open WebUI:8080]
+    WebUI --> Ollama[Ollama Windows:11434]
+    PX[PX proxy:18080] -. usado para downloads/proxy .-> Windows[Windows Host]

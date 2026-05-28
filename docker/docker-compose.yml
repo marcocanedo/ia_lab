@@ -1,0 +1,35 @@
+name: ia-lab
+
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:${OPEN_WEBUI_TAG:-main}
+    container_name: open-webui
+    restart: unless-stopped
+    ports:
+      - "${OPEN_WEBUI_HOST_PORT:-3000}:8080"
+    environment:
+      ENABLE_OLLAMA_API: "true"
+      OLLAMA_BASE_URLS: "${OLLAMA_BASE_URLS}"
+      OLLAMA_BASE_URL: "${OLLAMA_BASE_URL}"
+      NO_PROXY: "${NO_PROXY}"
+      HTTP_PROXY: ""
+      HTTPS_PROXY: ""
+      ALL_PROXY: ""
+      http_proxy: ""
+      https_proxy: ""
+      all_proxy: ""
+      ANONYMIZED_TELEMETRY: "false"
+      DO_NOT_TRACK: "true"
+      SCARF_NO_ANALYTICS: "true"
+    volumes:
+      - open-webui:/app/backend/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8080/api/config >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  open-webui:
+    external: true

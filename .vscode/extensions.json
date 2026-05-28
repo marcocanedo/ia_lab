@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "ms-vscode-remote.remote-ssh",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-toolsai.jupyter",
+    "ms-azuretools.vscode-docker",
+    "github.vscode-github-actions",
+    "github.copilot",
+    "bierner.markdown-mermaid"
+  ]
+}
