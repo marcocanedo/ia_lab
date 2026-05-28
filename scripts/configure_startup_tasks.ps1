@@ -18,7 +18,7 @@ if (-not (Test-Path $scriptPath)) {
 
 $action = New-ScheduledTaskAction `
     -Execute "powershell.exe" `
-    -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`"" `
+    -Argument "-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$scriptPath`"" `
     -WorkingDirectory $workingDirectory
 
 $startupTrigger = New-ScheduledTaskTrigger -AtStartup
@@ -32,6 +32,7 @@ $settings = New-ScheduledTaskSettingsSet `
     -StartWhenAvailable `
     -AllowStartIfOnBatteries `
     -DontStopIfGoingOnBatteries `
+    -Hidden `
     -ExecutionTimeLimit (New-TimeSpan -Minutes 10)
 
 $principal = New-ScheduledTaskPrincipal `

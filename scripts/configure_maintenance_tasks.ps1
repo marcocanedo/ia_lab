@@ -20,7 +20,7 @@ function Register-IaLabTask {
 
     $action = New-ScheduledTaskAction `
         -Execute "powershell.exe" `
-        -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$scriptRoot\$Script`"" `
+        -Argument "-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$scriptRoot\$Script`"" `
         -WorkingDirectory $scriptRoot
 
     $settings = New-ScheduledTaskSettingsSet `
@@ -28,6 +28,7 @@ function Register-IaLabTask {
         -StartWhenAvailable `
         -AllowStartIfOnBatteries `
         -DontStopIfGoingOnBatteries `
+        -Hidden `
         -ExecutionTimeLimit (New-TimeSpan -Minutes 20)
 
     $principal = New-ScheduledTaskPrincipal `

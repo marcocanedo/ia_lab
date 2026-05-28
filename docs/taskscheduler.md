@@ -11,7 +11,7 @@ Estado esperado: `Ready`.
 Acao:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\IA-LAB\scripts\startup_apps.ps1"
+powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\IA-LAB\scripts\startup_apps.ps1"
 ```
 
 Gatilhos:
@@ -38,6 +38,8 @@ C:\IA-LAB\scripts\configure_maintenance_tasks.ps1
 
 Executar em PowerShell como Administrador.
 
+As tarefas sao registradas como ocultas e executam o PowerShell com `-NonInteractive` e `-WindowStyle Hidden`, para operar de forma silenciosa durante o uso normal da maquina.
+
 ## Tarefas de manutencao
 
 | Tarefa | Frequencia | Script |
@@ -47,6 +49,12 @@ Executar em PowerShell como Administrador.
 | IA-LAB Config Backup | diario 22:00 | `backup_configs.ps1` |
 | IA-LAB Multipass Snapshot | semanal domingo 23:00 | `snapshot_multipass.ps1` + retencao `auto-*` dos ultimos 4 |
 | IA-LAB Cleanup Logs | semanal domingo 23:30 | `cleanup_logs.ps1` |
+
+## Modo silencioso
+
+A proposta atual usa o Task Scheduler como mecanismo "service-like": ele roda em segundo plano, inicia quando disponivel, evita instancias duplicadas e nao depende de janela interativa visivel.
+
+Um Windows Service real tambem seria possivel, mas exigiria um wrapper como WinSW/NSSM ou um executavel proprio de servico. Para estes scripts periodicos, o Task Scheduler e mais simples, audita melhor o historico de execucao e evita manter um processo residente apenas para chamar verificacoes curtas.
 
 ## Healthcheck
 

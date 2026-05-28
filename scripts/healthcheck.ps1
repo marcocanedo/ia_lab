@@ -46,7 +46,7 @@ function Invoke-CommandText {
     param([string]$Command)
 
     try {
-        $output = powershell.exe -NoProfile -Command $Command 2>&1
+        $output = powershell.exe -NoProfile -NonInteractive -WindowStyle Hidden -Command $Command 2>&1
         return @{
             exit_code = $LASTEXITCODE
             output = ($output -join "`n")

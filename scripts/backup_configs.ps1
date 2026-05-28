@@ -42,7 +42,7 @@ function Save-ProcessOutput {
         $process = Start-Process `
             -FilePath $FilePath `
             -ArgumentList $ArgumentList `
-            -NoNewWindow `
+            -WindowStyle Hidden `
             -PassThru `
             -RedirectStandardOutput $tempOut `
             -RedirectStandardError $tempErr

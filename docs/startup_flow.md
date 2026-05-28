@@ -11,7 +11,7 @@ IA-LAB Startup
 Acao:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\IA-LAB\scripts\startup_apps.ps1"
+powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\IA-LAB\scripts\startup_apps.ps1"
 ```
 
 Gatilhos:
@@ -31,6 +31,7 @@ Gatilhos:
 - Validacao de porta antes de seguir.
 - Timeouts e retries.
 - Log via transcript em `scripts\logs`.
+- Execucao silenciosa via Task Scheduler oculto e PowerShell `-WindowStyle Hidden`.
 - Tarefas antigas desabilitadas para evitar execucao concorrente.
 
 ## Race conditions mitigadas
