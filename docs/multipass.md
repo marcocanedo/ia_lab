@@ -1,4 +1,4 @@
-# Multipass
+﻿# Multipass
 
 VM principal:
 
@@ -34,7 +34,7 @@ multipass exec ia-lab -- docker ps
 ## Snapshots
 
 ```powershell
-C:\IA-LAB\scripts\snapshot_multipass.ps1
+C:\IA-LAB\scripts\maintenance\snapshot_multipass.ps1
 ```
 
 Antes de upgrades maiores, criar snapshot manual e validar espaco em disco.

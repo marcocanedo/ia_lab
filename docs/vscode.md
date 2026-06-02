@@ -1,4 +1,4 @@
-# VSCode
+﻿# VSCode
 
 ## Workspace
 
@@ -41,7 +41,7 @@ Host ia-lab
 O script abaixo atualiza automaticamente o IP do host `ia-lab` quando a VM muda de endereco:
 
 ```powershell
-C:\IA-LAB\scripts\update_ssh_config.ps1
+C:\IA-LAB\scripts\startup\update_ssh_config.ps1
 ```
 
 O `startup_vm.ps1` tambem chama esse script durante a inicializacao.

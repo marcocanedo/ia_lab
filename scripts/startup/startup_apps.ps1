@@ -1,7 +1,8 @@
 $ErrorActionPreference = "Stop"
 
-$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$logDir = Join-Path $scriptRoot "logs"
+$startupRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptsRoot = Split-Path -Parent $startupRoot
+$logDir = Join-Path $scriptsRoot "logs"
 $logFile = Join-Path $logDir ("startup_apps_{0:yyyyMMdd_HHmmss}.log" -f (Get-Date))
 
 New-Item -ItemType Directory -Path $logDir -Force | Out-Null
@@ -17,7 +18,7 @@ try {
     )
 
     foreach ($step in $steps) {
-        $path = Join-Path $scriptRoot $step
+        $path = Join-Path $startupRoot $step
         if (-not (Test-Path $path)) {
             throw "Script nao encontrado: $path"
         }

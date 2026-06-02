@@ -1,4 +1,4 @@
-# Proxy
+﻿# Proxy
 
 PX roda no Windows Host em:
 
@@ -16,14 +16,16 @@ O container Open WebUI nao deve usar `HTTP_PROXY` para falar com Ollama. A confi
 
 ## Proxy da VM Multipass
 
-Problema encontrado: a VM estava com apt apontando para `172.30.224.1:18080`, endereco inacessivel a partir da rede Multipass.
+Problema encontrado: a VM ja teve proxy apt apontando para enderecos antigos, inacessiveis a partir da rede Multipass atual.
 
-Correcao aplicada:
+Configuracao esperada no estado validado:
 
 ```text
-Acquire::http::Proxy "http://172.19.224.1:18080";
-Acquire::https::Proxy "http://172.19.224.1:18080";
+Acquire::http::Proxy "http://172.25.112.1:18080";
+Acquire::https::Proxy "http://172.25.112.1:18080";
 ```
+
+O script atual detecta o gateway da VM automaticamente. Use `-Preview` para conferir antes de aplicar.
 
 Arquivo na VM:
 
@@ -34,7 +36,7 @@ Arquivo na VM:
 Script:
 
 ```powershell
-C:\IA-LAB\scripts\configure_vm_proxy.ps1
+C:\IA-LAB\scripts\setup\configure_vm_proxy.ps1
 ```
 
 ## Git

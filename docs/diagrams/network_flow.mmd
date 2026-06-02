@@ -1,8 +1,12 @@
-flowchart TD
+﻿flowchart TD
     A[127.0.0.1:3000 Windows] --> B[portproxy]
     B --> C[172.19.x.x:3000 VM]
     C --> D[Docker NAT]
     D --> E[open-webui:8080 container]
-    E --> F[10.14.0.226:11434 Ollama Windows]
+    E --> F[10.14.0.226:11436 Ollama router]
+    F --> G[127.0.0.1:11434 GPU]
+    F --> H[127.0.0.1:11435 CPU]
+    G --> F
+    H --> F
     F --> E
     E --> A

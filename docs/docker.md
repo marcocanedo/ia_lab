@@ -1,4 +1,4 @@
-# Docker
+﻿# Docker
 
 Docker roda dentro da VM Multipass `ia-lab`.
 

@@ -2,8 +2,13 @@
 scripts/logs/
 backups/
 docker/backups/
-scripts/task_backups/
+llama.cpp/
+models/
+scripts/archive/legacy/task_backups/
 *.log
+*.gguf
+*.zip
+*.7z
 
 # Python
 __pycache__/

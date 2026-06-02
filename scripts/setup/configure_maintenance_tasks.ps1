@@ -8,7 +8,7 @@ if (-not $isAdmin) {
     throw "Execute este script em um PowerShell aberto como Administrador."
 }
 
-$scriptRoot = "C:\IA-LAB\scripts"
+$scriptRoot = "C:\IA-LAB\scripts\maintenance"
 
 function Register-IaLabTask {
     param(

@@ -1,8 +1,8 @@
 $ErrorActionPreference = "Stop"
 
 $taskName = "IA-LAB Startup"
-$scriptPath = "C:\IA-LAB\scripts\startup_apps.ps1"
-$workingDirectory = "C:\IA-LAB\scripts"
+$scriptPath = "C:\IA-LAB\scripts\startup\startup_apps.ps1"
+$workingDirectory = "C:\IA-LAB\scripts\startup"
 
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(
     [Security.Principal.WindowsBuiltInRole]::Administrator

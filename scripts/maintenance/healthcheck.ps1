@@ -63,11 +63,13 @@ function Invoke-CommandText {
 $checks = New-Object System.Collections.Generic.List[object]
 
 $checks.Add((Test-Port "PX port" "127.0.0.1" 18080))
-$checks.Add((Test-Port "Ollama port" "127.0.0.1" 11434))
+$checks.Add((Test-Port "Ollama GPU port" "127.0.0.1" 11434))
+$checks.Add((Test-Port "Ollama CPU port" "127.0.0.1" 11435))
+$checks.Add((Test-Port "Ollama router port" "127.0.0.1" 11436))
 $checks.Add((Test-Port "Open WebUI portproxy" "127.0.0.1" 3000))
 
 try {
-    $ollamaTags = Invoke-RestMethod -Uri "http://127.0.0.1:11434/api/tags" -TimeoutSec 10
+    $ollamaTags = Invoke-RestMethod -Uri "http://127.0.0.1:11436/api/tags" -TimeoutSec 10
     $modelCount = @($ollamaTags.models).Count
     $checks.Add((New-Check "Ollama API" "OK" "$modelCount models available"))
 }

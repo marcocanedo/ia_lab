@@ -1,11 +1,18 @@
-sequenceDiagram
+﻿sequenceDiagram
     participant WebUI as Open WebUI container
-    participant Ollama as Ollama Windows
+    participant Router as Ollama router 11436
+    participant GPU as Ollama GPU 11434
+    participant CPU as Ollama CPU 11435
     participant Model as Modelo local
 
-    WebUI->>Ollama: GET /api/tags
-    Ollama-->>WebUI: lista modelos
-    WebUI->>Ollama: POST /api/chat
-    Ollama->>Model: carregar modelo
-    Model-->>Ollama: resposta
-    Ollama-->>WebUI: mensagem
+    WebUI->>Router: GET /api/tags
+    Router->>GPU: encaminha consulta
+    GPU-->>Router: lista modelos
+    Router-->>WebUI: lista modelos
+    WebUI->>Router: POST /api/chat
+    Router->>GPU: modelos GPU/default
+    Router->>CPU: modelos CPU
+    GPU->>Model: carregar modelo
+    CPU->>Model: carregar modelo
+    Model-->>Router: resposta
+    Router-->>WebUI: mensagem

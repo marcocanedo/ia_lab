@@ -1,4 +1,4 @@
-# Troubleshooting
+﻿# Troubleshooting
 
 ## Open WebUI retorna 500
 
@@ -12,7 +12,7 @@ Causas provaveis:
 
 - Open WebUI usando URL antiga do Ollama persistida.
 - Variavel incorreta ou incompleta para endpoint Ollama.
-- Proxy HTTP dentro do container interferindo com chamadas para `10.14.0.226:11434`.
+- Proxy HTTP dentro do container interferindo com chamadas para `10.14.0.226:11436`.
 
 Correcao aplicada:
 
@@ -23,8 +23,8 @@ docker run -d \
   --restart unless-stopped \
   -p 3000:8080 \
   -e ENABLE_OLLAMA_API=true \
-  -e OLLAMA_BASE_URLS=http://10.14.0.226:11434 \
-  -e OLLAMA_BASE_URL=http://10.14.0.226:11434 \
+  -e OLLAMA_BASE_URLS=http://10.14.0.226:11436 \
+  -e OLLAMA_BASE_URL=http://10.14.0.226:11436 \
   -e NO_PROXY=localhost,127.0.0.1,10.14.0.226,172.30.224.1,172.30.0.0/16 \
   -e HTTP_PROXY= \
   -e HTTPS_PROXY= \
@@ -37,7 +37,7 @@ Validar:
 
 ```powershell
 multipass exec ia-lab -- docker logs open-webui --tail 120
-multipass exec ia-lab -- docker exec open-webui curl --noproxy "*" http://10.14.0.226:11434/api/tags
+multipass exec ia-lab -- docker exec open-webui curl --noproxy "*" http://10.14.0.226:11436/api/tags
 ```
 
 ## Docker inacessivel no Windows
@@ -54,13 +54,30 @@ Validar no Windows:
 
 ```powershell
 Test-NetConnection 127.0.0.1 -Port 11434
-Invoke-RestMethod http://127.0.0.1:11434/api/tags
+Test-NetConnection 127.0.0.1 -Port 11435
+Test-NetConnection 127.0.0.1 -Port 11436
+Invoke-RestMethod http://127.0.0.1:11436/api/tags
 ```
 
 Validar dentro do container:
 
 ```powershell
-multipass exec ia-lab -- docker exec open-webui curl --noproxy "*" http://10.14.0.226:11434/api/tags
+multipass exec ia-lab -- docker exec open-webui curl --noproxy "*" http://10.14.0.226:11436/api/tags
+```
+
+## Roteador Ollama indisponivel
+
+Se `11434` e `11435` responderem, mas `11436` falhar, reiniciar apenas o startup do Ollama:
+
+```powershell
+C:\IA-LAB\scripts\startup\startup_ollama.ps1
+```
+
+Validar logs:
+
+```powershell
+Get-Content C:\IA-LAB\scripts\logs\ollama_router.err.log -Tail 80
+Get-Content C:\IA-LAB\scripts\logs\ollama_router.out.log -Tail 80
 ```
 
 ## VSCode Remote SSH

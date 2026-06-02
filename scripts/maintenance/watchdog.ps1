@@ -1,7 +1,8 @@
 $ErrorActionPreference = "Continue"
 
-$scriptRoot = "C:\IA-LAB\scripts"
-$logDir = Join-Path $scriptRoot "logs"
+$scriptsRoot = Split-Path -Parent $PSScriptRoot
+$startupRoot = Join-Path $scriptsRoot "startup"
+$logDir = Join-Path $scriptsRoot "logs"
 $logFile = Join-Path $logDir ("watchdog_{0:yyyyMMdd}.log" -f (Get-Date))
 
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
@@ -22,12 +23,12 @@ Write-Log "Watchdog iniciado"
 
 if (-not (Test-PortQuiet 18080)) {
     Write-Log "PX indisponivel; executando startup_px.ps1"
-    & (Join-Path $scriptRoot "startup_px.ps1")
+    & (Join-Path $startupRoot "startup_px.ps1")
 }
 
-if (-not (Test-PortQuiet 11434)) {
+if ((-not (Test-PortQuiet 11434)) -or (-not (Test-PortQuiet 11435)) -or (-not (Test-PortQuiet 11436))) {
     Write-Log "Ollama indisponivel; executando startup_ollama.ps1"
-    & (Join-Path $scriptRoot "startup_ollama.ps1")
+    & (Join-Path $startupRoot "startup_ollama.ps1")
 }
 
 try {
@@ -43,7 +44,7 @@ catch {
 
 if (-not (Test-PortQuiet 3000)) {
     Write-Log "Portproxy/Open WebUI indisponivel; executando startup_vm.ps1"
-    & (Join-Path $scriptRoot "startup_vm.ps1")
+    & (Join-Path $startupRoot "startup_vm.ps1")
 }
 
 Write-Log "Watchdog concluido"

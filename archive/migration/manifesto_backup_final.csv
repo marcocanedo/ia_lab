@@ -1,0 +1,35 @@
+categoria,item,status,observacao
+identificacao,BACKUP_WORKSTATION_2026,ok,Backup validado no OneDrive
+estado_geral,backup_presente,ok,Pasta principal localizada
+estado_geral,estrutura_principal,ok,Pastas 00_RELATORIOS_INVENTARIO ate 10_RESTORE_GUIDE presentes
+estado_geral,arquivos_essenciais,ok,Arquivos essenciais encontrados
+estado_geral,scripts_restauracao,ok,Scripts de restore presentes
+estado_geral,guia_restauracao,ok,RESTORE_GUIDE.md presente
+sincronizacao,pendencias,ok,Nao detectadas na validacao final
+sincronizacao,erros,ok,Nao detectados na validacao final
+sincronizacao,conflitos,ok,Nao detectados na validacao final
+pastas_validadas,00_RELATORIOS_INVENTARIO,ok,Existe no backup
+pastas_validadas,01_IA_LAB,ok,Existe no backup
+pastas_validadas,02_CONFIGS,ok,Existe no backup
+pastas_validadas,03_EXPORTS,ok,Existe no backup
+pastas_validadas,04_SSH_PROTEGIDO,ok,Existe no backup
+pastas_validadas,05_OLLAMA,ok,Existe no backup
+pastas_validadas,06_CODEX,ok,Existe no backup
+pastas_validadas,07_VSCODE,ok,Existe no backup
+pastas_validadas,08_DOCUMENTOS_TECNICOS,ok,Existe no backup
+pastas_validadas,09_SCRIPTS_RESTORE,ok,Existe no backup
+pastas_validadas,10_RESTORE_GUIDE,ok,Existe no backup
+arquivos_essenciais,backup_fase6_operacao.log,ok,Presente no backup
+arquivos_essenciais,validacao_backup_onedrive.md,ok,Presente no backup
+arquivos_essenciais,03_EXPORTS/conda_envs.txt,ok,Presente no backup
+arquivos_essenciais,03_EXPORTS/pip_freeze_global.txt,ok,Presente no backup
+arquivos_essenciais,03_EXPORTS/vscode_extensions.txt,ok,Presente no backup
+arquivos_essenciais,03_EXPORTS/ollama_models.txt,ok,Presente no backup
+arquivos_essenciais,03_EXPORTS/docker_images.txt,ok,Presente no backup
+arquivos_essenciais,03_EXPORTS/winget_list_final.txt,ok,Presente no backup
+arquivos_essenciais,04_SSH_PROTEGIDO/sensibilidade_backup.md,ok,Presente no backup
+arquivos_essenciais,09_SCRIPTS_RESTORE/restore_ia_lab.ps1,ok,Presente no backup
+arquivos_essenciais,09_SCRIPTS_RESTORE/validar_ambiente_nova_workstation.ps1,ok,Presente no backup
+arquivos_essenciais,10_RESTORE_GUIDE/RESTORE_GUIDE.md,ok,Presente no backup
+observacoes,multipass_ia_lab,residual,Registrado como nao copiado no relatorio original
+conclusao,pronto_para_restauracao,sim,Backup consistente e validado

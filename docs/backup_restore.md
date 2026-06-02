@@ -1,11 +1,11 @@
-# Backup e Restore
+﻿# Backup e Restore
 
 ## Backups implementados
 
 Script:
 
 ```powershell
-C:\IA-LAB\scripts\backup_configs.ps1
+C:\IA-LAB\scripts\maintenance\backup_configs.ps1
 ```
 
 Inclui:
@@ -30,7 +30,7 @@ C:\IA-LAB\backups\configs
 Script:
 
 ```powershell
-C:\IA-LAB\scripts\snapshot_multipass.ps1
+C:\IA-LAB\scripts\maintenance\snapshot_multipass.ps1
 ```
 
 Cria snapshot da VM `ia-lab`.
@@ -44,7 +44,7 @@ Politica definida:
 Cleanup:
 
 ```powershell
-C:\IA-LAB\scripts\cleanup_multipass_snapshots.ps1
+C:\IA-LAB\scripts\maintenance\cleanup_multipass_snapshots.ps1
 ```
 
 ## Restore resumido

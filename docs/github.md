@@ -1,4 +1,4 @@
-# GitHub
+﻿# GitHub
 
 ## Estado
 
@@ -16,7 +16,7 @@ git config --global --list
 Script:
 
 ```powershell
-C:\IA-LAB\scripts\git_setup.ps1
+C:\IA-LAB\scripts\setup\git_setup.ps1
 ```
 
 Configura:
