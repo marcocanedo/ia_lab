@@ -96,7 +96,7 @@ function Get-LastWriteRecursive {
 
 function Test-HasGit {
     param([string]$Path)
-    return (Test-Path (Join-Path $Path ".git"))
+    return (Test-Path -LiteralPath (Join-Path $Path ".git"))
 }
 
 function Get-DependencyMarkers {
@@ -140,7 +140,7 @@ function Find-ProjectCandidates {
     param([string[]]$Roots)
     $exclude = @("node_modules", ".venv", "venv", "env", "__pycache__", ".git", ".mypy_cache", ".pytest_cache", "AppData", "Windows", "Program Files", "Program Files (x86)", "ProgramData")
     $candidateMap = @{}
-    foreach ($root in ($Roots | Where-Object { $_ -and (Test-Path $_) } | Select-Object -Unique)) {
+    foreach ($root in ($Roots | Where-Object { $_ -and (Test-Path -LiteralPath $_) } | Select-Object -Unique)) {
         $queue = New-Object System.Collections.Queue
         $queue.Enqueue([pscustomobject]@{ path = (Resolve-Path $root).Path; depth = 0 })
         while ($queue.Count -gt 0) {
@@ -154,7 +154,7 @@ function Find-ProjectCandidates {
             $files = @(Get-ChildItem -LiteralPath $path -File -Force -ErrorAction SilentlyContinue)
             $names = ($files | Select-Object -ExpandProperty Name)
             $hasMarker = (
-                (Test-Path (Join-Path $path ".git")) -or
+                (Test-Path -LiteralPath (Join-Path $path ".git")) -or
                 ($names -contains "requirements.txt") -or
                 ($names -contains "pyproject.toml") -or
                 ($names -contains "environment.yml") -or
@@ -275,7 +275,7 @@ foreach ($p in @(
     (Join-Path $userProfile ".azure"),
     "C:\IA-LAB"
 )) {
-    if (Test-Path $p) { $roots.Add($p) }
+    if (Test-Path -LiteralPath $p) { $roots.Add($p) }
 }
 Get-ChildItem -LiteralPath $userProfile -Directory -Force -ErrorAction SilentlyContinue |
     Where-Object { $_.Name -match "(?i)OneDrive|source|project|repo|ia|python|sql|notebook" } |
@@ -376,7 +376,7 @@ netstat -ano
     "02_mapear_projetos.ps1" = @'
 $ErrorActionPreference = "Continue"
 Write-Output "Somente leitura: busca projetos e arquivos tecnicos em locais provaveis."
-$roots = @("$env:USERPROFILE\Desktop","$env:USERPROFILE\Documents","$env:USERPROFILE\Downloads","$env:USERPROFILE\OneDrive","$env:USERPROFILE\source","$env:USERPROFILE\projects","$env:USERPROFILE\repos","C:\IA-LAB") | Where-Object { Test-Path $_ }
+$roots = @("$env:USERPROFILE\Desktop","$env:USERPROFILE\Documents","$env:USERPROFILE\Downloads","$env:USERPROFILE\OneDrive","$env:USERPROFILE\source","$env:USERPROFILE\projects","$env:USERPROFILE\repos","C:\IA-LAB") | Where-Object { Test-Path -LiteralPath $_ }
 foreach ($root in $roots) {
     Get-ChildItem -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue |
         Where-Object { $_.Name -match '(^\.git$|requirements\.txt|pyproject\.toml|environment\.ya?ml|package\.json|docker-compose\.yml|\.ipynb$|\.py$|\.sql$|\.ps1$|\.md$)' } |

@@ -1,21 +1,28 @@
+param(
+    [string]$BackupRoot,
+    [string]$OutDir = 'C:\inventario_migracao_workstation',
+    [double]$Phase6SizeGb = 2.39,
+    [int]$Phase6Files = 36490
+)
+
 $ErrorActionPreference = 'Continue'
 
-$OneDriveRoot = Get-ChildItem -LiteralPath $env:USERPROFILE -Directory -Force |
-    Where-Object { $_.Name -like 'OneDrive - Secretaria da Fazenda do Paran*' } |
-    Select-Object -First 1
+if ([string]::IsNullOrWhiteSpace($BackupRoot)) {
+    $OneDriveRoot = Get-ChildItem -LiteralPath $env:USERPROFILE -Directory -Force |
+        Where-Object { $_.Name -like 'OneDrive - Secretaria da Fazenda do Paran*' } |
+        Select-Object -First 1
 
-if ($null -eq $OneDriveRoot) {
-    throw "OneDrive root not found under $env:USERPROFILE"
+    if ($null -eq $OneDriveRoot) {
+        throw "OneDrive root not found under $env:USERPROFILE"
+    }
+
+    $BackupRoot = Join-Path $OneDriveRoot.FullName 'BACKUP_WORKSTATION_2026'
 }
 
-$BackupRoot = Join-Path $OneDriveRoot.FullName 'BACKUP_WORKSTATION_2026'
-$OutDir = 'C:\inventario_migracao_workstation'
 $Manifest = Join-Path $OutDir 'manifesto_backup_final.csv'
 $OldManifest = Join-Path $OutDir 'manifesto_backup_final_resumo_validacao.csv'
 $Summary = Join-Path $OutDir 'manifesto_backup_final_resumo.md'
 $MaxHashBytes = 500MB
-$Phase6SizeGb = 2.39
-$Phase6Files = 36490
 
 if (-not (Test-Path -LiteralPath $BackupRoot -PathType Container)) {
     throw "Backup root not found: $BackupRoot"
@@ -54,6 +61,13 @@ function ConvertTo-CsvField([object]$Value) {
     return '"' + $text + '"'
 }
 
+function Get-HashLiteralPath([string]$Path) {
+    if ($Path -match '^[A-Za-z]:\\') {
+        return '\\?\' + $Path
+    }
+    return $Path
+}
+
 $tmpManifest = "$Manifest.tmp"
 $writer = New-Object System.IO.StreamWriter($tmpManifest, $false, ([System.Text.Encoding]::UTF8))
 $writer.WriteLine('relative_path,full_path,size_bytes,size_human,last_write_time,creation_time,extension,directory,sha256,hash_status,sensitivity_flag,notes')
@@ -72,6 +86,7 @@ $rootCounts = @{}
 try {
     Get-ChildItem -LiteralPath $BackupRoot -Recurse -File -Force -ErrorAction SilentlyContinue | ForEach-Object {
         $file = $_
+        if ($file.FullName -eq $tmpManifest) { return }
         $relative = $file.FullName.Substring($BackupRoot.Length).TrimStart('\')
         $sha = ''
         $hashStatus = ''
@@ -84,7 +99,8 @@ try {
                 $skippedLarge++
                 $withoutHash++
             } else {
-                $sha = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256 -ErrorAction Stop).Hash
+                $hashPath = Get-HashLiteralPath $file.FullName
+                $sha = (Get-FileHash -LiteralPath $hashPath -Algorithm SHA256 -ErrorAction Stop).Hash
                 $hashStatus = 'ok'
                 $hashOk++
             }
