@@ -15,6 +15,71 @@ $gpuModels = @{
     "smollm2:135m" = $true
     "llama3.2:3b" = $true
     "qwen3.5:0.8b" = $true
+    "gemma4:12b" = $true
+    "gemma4:12b-gpu" = $true
+    "gemma4:12b-it-q4_K_M" = $true
+}
+
+$upstreamModelAliases = @{
+    "gemma4:12b" = "gemma4:12b-gpu"
+}
+
+$hiddenDisplayModels = @{
+    "gemma4:12b-gpu" = $true
+    "gemma4:12b-it-q4_K_M" = $true
+}
+
+$displaySuffixPattern = "\s+\[(GPU|CPU)\]$"
+
+function Resolve-ModelName {
+    param([string]$Model)
+
+    if (-not $Model) {
+        return $Model
+    }
+
+    return ($Model -replace $displaySuffixPattern, "")
+}
+
+function Resolve-UpstreamModelName {
+    param([string]$Model)
+
+    $canonical = Resolve-ModelName $Model
+    if ($upstreamModelAliases.ContainsKey($canonical)) {
+        return $upstreamModelAliases[$canonical]
+    }
+
+    return $canonical
+}
+
+function Get-ModelBackendLabel {
+    param([string]$Model)
+
+    $canonical = Resolve-ModelName $Model
+    if ($cpuModels.ContainsKey($canonical)) {
+        return "CPU"
+    }
+
+    return "GPU"
+}
+
+function Get-DisplayModelName {
+    param([string]$Model)
+
+    $canonical = Resolve-ModelName $Model
+    $backend = Get-ModelBackendLabel $canonical
+    return "$canonical [$backend]"
+}
+
+function Get-ModelBackendDescription {
+    param([string]$Model)
+
+    $backend = Get-ModelBackendLabel $Model
+    if ($backend -eq "CPU") {
+        return "IA-LAB backend: CPU via Ollama 11435"
+    }
+
+    return "IA-LAB backend: GPU via Ollama 11434"
 }
 
 function Read-HttpLine {
@@ -43,7 +108,7 @@ function Get-Backend {
     try {
         if ($Body) {
             $payload = $Body | ConvertFrom-Json -ErrorAction Stop
-            $model = [string]$payload.model
+            $model = Resolve-ModelName ([string]$payload.model)
             if ($cpuModels.ContainsKey($model)) {
                 Write-Host "$(Get-Date -Format s) route model=$model backend=cpu"
                 return @{ host = $cpuHost; port = $cpuPort }
@@ -60,6 +125,27 @@ function Get-Backend {
 
     Write-Host "$(Get-Date -Format s) route model=- backend=gpu"
     return @{ host = $gpuHost; port = $gpuPort }
+}
+
+function Update-RequestBodyModel {
+    param([string]$Body)
+
+    if (-not $Body) {
+        return $Body
+    }
+
+    try {
+        $payload = $Body | ConvertFrom-Json -ErrorAction Stop
+        if ($payload.PSObject.Properties.Name -contains "model") {
+            $payload.model = Resolve-UpstreamModelName ([string]$payload.model)
+            return ($payload | ConvertTo-Json -Depth 64 -Compress)
+        }
+    }
+    catch {
+        Write-Host "$(Get-Date -Format s) model rewrite skipped: $($_.Exception.Message)"
+    }
+
+    return $Body
 }
 
 function Copy-UntilClosed {
@@ -84,6 +170,62 @@ function Write-ErrorResponse {
     $Stream.Write($headerBytes, 0, $headerBytes.Length)
     $Stream.Write($body, 0, $body.Length)
     $Stream.Flush()
+}
+
+function Write-JsonResponse {
+    param([System.IO.Stream]$Stream, [string]$Json)
+
+    $body = [System.Text.Encoding]::UTF8.GetBytes($Json)
+    $header = "HTTP/1.1 200 OK`r`nContent-Type: application/json`r`nContent-Length: $($body.Length)`r`nConnection: close`r`n`r`n"
+    $headerBytes = [System.Text.Encoding]::ASCII.GetBytes($header)
+    $Stream.Write($headerBytes, 0, $headerBytes.Length)
+    $Stream.Write($body, 0, $body.Length)
+    $Stream.Flush()
+}
+
+function Write-TaggedModelsResponse {
+    param([System.IO.Stream]$Stream)
+
+    $uri = "http://{0}:{1}/api/tags" -f $gpuHost, $gpuPort
+    $tags = Invoke-RestMethod -Uri $uri -TimeoutSec 30
+    $visibleModels = @()
+
+    foreach ($modelInfo in @($tags.models)) {
+        $canonical = Resolve-ModelName ([string]$modelInfo.name)
+        if (-not $canonical) {
+            $canonical = Resolve-ModelName ([string]$modelInfo.model)
+        }
+
+        if ($hiddenDisplayModels.ContainsKey($canonical)) {
+            continue
+        }
+
+        $displayName = Get-DisplayModelName $canonical
+        $description = Get-ModelBackendDescription $canonical
+
+        if ($modelInfo.PSObject.Properties.Name -contains "name") {
+            $modelInfo.name = $displayName
+        }
+        if ($modelInfo.PSObject.Properties.Name -contains "model") {
+            $modelInfo.model = $displayName
+        }
+
+        $modelInfo | Add-Member -NotePropertyName "description" -NotePropertyValue $description -Force
+        $modelInfo | Add-Member -NotePropertyName "ia_lab_backend" -NotePropertyValue (Get-ModelBackendLabel $canonical) -Force
+        $modelInfo | Add-Member -NotePropertyName "ia_lab_model" -NotePropertyValue $canonical -Force
+
+        if (-not $modelInfo.details) {
+            $modelInfo | Add-Member -NotePropertyName "details" -NotePropertyValue ([pscustomobject]@{}) -Force
+        }
+
+        $modelInfo.details | Add-Member -NotePropertyName "description" -NotePropertyValue $description -Force
+        $modelInfo.details | Add-Member -NotePropertyName "ia_lab_backend" -NotePropertyValue (Get-ModelBackendLabel $canonical) -Force
+        $visibleModels += $modelInfo
+    }
+
+    $tags.models = @($visibleModels)
+    $json = $tags | ConvertTo-Json -Depth 12 -Compress
+    Write-JsonResponse $Stream $json
 }
 
 $listener = [System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Any, $listenPort)
@@ -127,6 +269,17 @@ while ($true) {
             $offset += $clientStream.Read($bodyBytes, $offset, $contentLength - $offset)
         }
         $body = [System.Text.Encoding]::UTF8.GetString($bodyBytes)
+
+        if ($requestLine.StartsWith("GET /api/tags")) {
+            Write-TaggedModelsResponse $clientStream
+            continue
+        }
+
+        if ($requestLine.StartsWith("POST ")) {
+            $body = Update-RequestBodyModel $body
+            $bodyBytes = [System.Text.Encoding]::UTF8.GetBytes($body)
+            $contentLength = $bodyBytes.Length
+        }
 
         $backend = if ($requestLine.StartsWith("POST ")) {
             Get-Backend $body

@@ -8,10 +8,14 @@ $cpuPort = 11435
 $proxyUrl = "http://127.0.0.1:18080"
 $proxyPort = 18080
 $noProxy = "localhost,127.0.0.1,::1,0.0.0.0,10.14.0.226"
+$ollamaModelsRoot = "C:\IA-LAB\models\ollama"
+$flashAttention = "1"
 
 Write-Host "Configurando variaveis Ollama..."
 
 [Environment]::SetEnvironmentVariable("OLLAMA_HOST", $gpuHostValue, "User")
+[Environment]::SetEnvironmentVariable("OLLAMA_MODELS", $ollamaModelsRoot, "User")
+[Environment]::SetEnvironmentVariable("OLLAMA_FLASH_ATTENTION", $flashAttention, "User")
 [Environment]::SetEnvironmentVariable("HTTP_PROXY", $proxyUrl, "User")
 [Environment]::SetEnvironmentVariable("HTTPS_PROXY", $proxyUrl, "User")
 [Environment]::SetEnvironmentVariable("ALL_PROXY", $proxyUrl, "User")
@@ -19,6 +23,8 @@ Write-Host "Configurando variaveis Ollama..."
 [Environment]::SetEnvironmentVariable("no_proxy", $noProxy, "User")
 
 $env:OLLAMA_HOST = $gpuHostValue
+$env:OLLAMA_MODELS = $ollamaModelsRoot
+$env:OLLAMA_FLASH_ATTENTION = $flashAttention
 $env:HTTP_PROXY = $proxyUrl
 $env:HTTPS_PROXY = $proxyUrl
 $env:ALL_PROXY = $proxyUrl
@@ -57,7 +63,7 @@ function Start-OllamaBackend {
         "Remove-Item Env:OLLAMA_LLM_LIBRARY -ErrorAction SilentlyContinue;"
     }
 
-    $command = "`$env:OLLAMA_HOST='$HostValue'; $libraryCommand & '$($ollama.Source)' serve"
+    $command = "`$env:OLLAMA_HOST='$HostValue'; `$env:OLLAMA_MODELS='$ollamaModelsRoot'; `$env:OLLAMA_FLASH_ATTENTION='$flashAttention'; $libraryCommand & '$($ollama.Source)' serve"
     Start-Process -WindowStyle Hidden -FilePath "powershell.exe" -ArgumentList @(
         "-NoProfile",
         "-WindowStyle",

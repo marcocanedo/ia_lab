@@ -9,6 +9,44 @@ if (-not $isAdmin) {
 }
 
 $scriptRoot = "C:\IA-LAB\scripts\maintenance"
+$currentTaskNames = @(
+    "IA-LAB Watchdog",
+    "IA-LAB Healthcheck",
+    "IA-LAB Config Backup",
+    "IA-LAB Multipass Snapshot",
+    "IA-LAB Cleanup Logs"
+)
+$legacyScriptPaths = @(
+    "C:\IA-LAB\scripts\watchdog.ps1",
+    "C:\IA-LAB\scripts\healthcheck.ps1",
+    "C:\IA-LAB\scripts\backup_configs.ps1",
+    "C:\IA-LAB\scripts\snapshot_multipass.ps1",
+    "C:\IA-LAB\scripts\cleanup_logs.ps1"
+)
+
+function Remove-IaLabLegacyMaintenanceTasks {
+    $legacyTasks = Get-ScheduledTask -ErrorAction SilentlyContinue | Where-Object {
+        $arguments = ($_.Actions | ForEach-Object { $_.Arguments }) -join " "
+        $usesLegacyScript = $false
+
+        foreach ($legacyScriptPath in $legacyScriptPaths) {
+            if ($arguments -like "*$legacyScriptPath*") {
+                $usesLegacyScript = $true
+                break
+            }
+        }
+
+        ($_.TaskName -in $currentTaskNames) -or $usesLegacyScript
+    }
+
+    foreach ($task in $legacyTasks) {
+        if ($task.State -eq "Running") {
+            Stop-ScheduledTask -TaskName $task.TaskName -TaskPath $task.TaskPath -ErrorAction SilentlyContinue
+        }
+
+        Unregister-ScheduledTask -TaskName $task.TaskName -TaskPath $task.TaskPath -Confirm:$false
+    }
+}
 
 function Register-IaLabTask {
     param(
@@ -57,6 +95,8 @@ $healthTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).Date.AddMinutes(1
 $backupTrigger = New-ScheduledTaskTrigger -Daily -At "22:00"
 $snapshotTrigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Sunday -At "23:00"
 $cleanupTrigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Sunday -At "23:30"
+
+Remove-IaLabLegacyMaintenanceTasks
 
 Register-IaLabTask "IA-LAB Watchdog" "watchdog.ps1" $watchdogTrigger "Reinicia componentes IA-LAB se PX, Ollama ou Open WebUI ficarem indisponiveis."
 Register-IaLabTask "IA-LAB Healthcheck" "healthcheck.ps1" $healthTrigger "Gera relatorio de saude consolidado do IA-LAB."

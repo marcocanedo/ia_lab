@@ -17,6 +17,16 @@ cd C:\IA-LAB
 - Container `open-webui` esta `running` e `healthy`.
 - Portproxy local aponta `127.0.0.1:3000` para o IP atual da VM.
 
+## Validar Gemma 4 12B GPU
+
+```powershell
+Invoke-RestMethod http://127.0.0.1:11436/api/tags
+$body = @{ model = "gemma4:12b-gpu"; prompt = "Responda apenas: ok"; stream = $false } | ConvertTo-Json
+Invoke-RestMethod -Method Post -Uri http://127.0.0.1:11436/api/generate -ContentType "application/json" -Body $body
+Invoke-RestMethod http://127.0.0.1:11434/api/ps
+nvidia-smi
+```
+
 ## Inicializacao manual
 
 ```powershell

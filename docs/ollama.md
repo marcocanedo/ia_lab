@@ -26,8 +26,25 @@ OLLAMA_BASE_URLS=http://10.14.0.226:11436
 ## Roteamento por modelo
 
 - CPU: `gemma3:4b`, `qwen2.5:3b`.
-- GPU: `smollm2:135m`, `llama3.2:3b`, `qwen3.5:0.8b`.
+- GPU: `smollm2:135m`, `llama3.2:3b`, `qwen3.5:0.8b`, `gemma4:12b-gpu`.
 - Default: GPU.
+
+## Gemma 4 12B
+
+Modelo recomendado para esta workstation:
+
+```text
+gemma4:12b-gpu
+```
+
+Esse alias usa `gemma4:12b-it-q4_K_M` com contexto controlado para chat geral:
+
+- `num_ctx 8192`
+- `temperature 1.0`
+- `top_p 0.95`
+- `top_k 64`
+
+A variante `gemma4:12b-it-q8_0` nao e recomendada para a RTX A2000 12GB porque o modelo tem cerca de 13 GB antes do uso adicional de KV cache.
 
 ## Validacao
 
@@ -49,6 +66,8 @@ multipass exec ia-lab -- docker exec open-webui curl --noproxy "*" http://10.14.
 - `qwen2.5:3b`
 - `qwen3.5:0.8b`
 - `gemma4:31b-cloud`
+- `gemma4:12b-gpu`
+- `gemma4:12b-it-q4_K_M`
 - `smollm2:135m`
 - `llama3.2:3b`
 - `gemma3:4b`
