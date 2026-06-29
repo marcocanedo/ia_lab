@@ -1,3 +1,7 @@
+param(
+    [string[]]$MonitoredProcesses = @("px", "ollama")
+)
+
 $ErrorActionPreference = "Continue"
 
 $root = "C:\IA-LAB"
@@ -60,6 +64,30 @@ function Invoke-CommandText {
     }
 }
 
+function Add-ProcessCheck {
+    param(
+        [System.Collections.Generic.List[object]]$CheckList,
+        [string]$Name,
+        [int]$MinCount = 1,
+        [int]$MaxCount = 1
+    )
+
+    $processes = @(Get-Process -Name $Name -ErrorAction SilentlyContinue)
+    $count = $processes.Count
+
+    if ($count -lt $MinCount) {
+        $CheckList.Add((New-Check "$Name process" "FAIL" "No process detected"))
+        return
+    }
+
+    if ($count -gt $MaxCount) {
+        $CheckList.Add((New-Check "$Name process" "WARN" "$count processes detected"))
+        return
+    }
+
+    $CheckList.Add((New-Check "$Name process" "OK" "$count process(es) detected"))
+}
+
 $checks = New-Object System.Collections.Generic.List[object]
 
 $checks.Add((Test-Port "PX port" "127.0.0.1" 18080))
@@ -109,23 +137,14 @@ else {
     $checks.Add((New-Check "Windows portproxy" "FAIL" $portproxy.output))
 }
 
-$pxProcesses = @(Get-Process px -ErrorAction SilentlyContinue)
-if ($pxProcesses.Count -eq 1) {
-    $checks.Add((New-Check "PX process count" "OK" "1 process"))
-}
-elseif ($pxProcesses.Count -gt 1) {
-    $checks.Add((New-Check "PX process count" "WARN" "$($pxProcesses.Count) processes detected"))
-}
-else {
-    $checks.Add((New-Check "PX process count" "FAIL" "No PX process detected"))
-}
+foreach ($processName in $MonitoredProcesses) {
+    if ([string]::IsNullOrWhiteSpace($processName)) {
+        continue
+    }
 
-$ollamaProcesses = @(Get-Process ollama -ErrorAction SilentlyContinue)
-if ($ollamaProcesses.Count -ge 1) {
-    $checks.Add((New-Check "Ollama process" "OK" "$($ollamaProcesses.Count) process(es) detected"))
-}
-else {
-    $checks.Add((New-Check "Ollama process" "FAIL" "No Ollama process detected"))
+    $normalizedName = $processName.Trim()
+    $maxCount = if ($normalizedName -ieq "ollama") { 2 } else { 1 }
+    Add-ProcessCheck -CheckList $checks -Name $normalizedName -MaxCount $maxCount
 }
 
 $summary = [pscustomobject]@{

@@ -61,6 +61,7 @@ Um Windows Service real tambem seria possivel, mas exigiria um wrapper como WinS
 O healthcheck valida:
 
 - PX
+- processos monitorados no host, por padrao `px` e `ollama`
 - Ollama GPU, CPU e roteador
 - Multipass
 - Docker
