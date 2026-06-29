@@ -7,7 +7,7 @@ O compose foi criado para preservar o ambiente atual:
 - porta publica continua `3000`
 - container continua `open-webui`
 - volume Docker continua `open-webui`
-- endpoint Ollama continua `http://10.14.0.226:11434`
+- endpoint Ollama continua `http://10.14.0.226:11436`
 - variaveis de proxy HTTP ficam vazias dentro do container
 
 ## Validar

@@ -1,0 +1,13 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+outputs/
+db/
+*.duckdb
+*.duckdb.wal
+*.xlsx
+*.csv
+*.parquet
+*.egg-info/

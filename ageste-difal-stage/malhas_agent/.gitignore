@@ -1,0 +1,7 @@
+db/
+exports/
+*.duckdb
+*.duckdb.wal
+*.xlsx
+*.csv
+*.parquet

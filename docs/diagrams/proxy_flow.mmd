@@ -1,5 +1,7 @@
-flowchart LR
+﻿flowchart LR
     App[Git/Pip/Docker/Browser quando necessario] --> PX[PX 127.0.0.1:18080]
     PX --> Corp[Proxy NTLM corporativo]
     Corp --> Internet[Internet]
-    WebUI[Open WebUI container] -. nao usa HTTP_PROXY para Ollama .-> Ollama[Ollama 10.14.0.226:11434]
+    WebUI[Open WebUI container] -. nao usa HTTP_PROXY para Ollama .-> Router[Ollama router 10.14.0.226:11436]
+    Router --> GPU[Ollama GPU 127.0.0.1:11434]
+    Router --> CPU[Ollama CPU 127.0.0.1:11435]

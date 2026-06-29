@@ -1,16 +1,20 @@
-{
+﻿{
   "folders": [
     {
       "name": "IA-LAB",
       "path": "."
     },
     {
-      "name": "Workspace",
-      "path": "workspace"
+      "name": "Startup",
+      "path": "scripts/startup"
     },
     {
-      "name": "Scripts",
-      "path": "scripts"
+      "name": "Maintenance",
+      "path": "scripts/maintenance"
+    },
+    {
+      "name": "Setup",
+      "path": "scripts/setup"
     },
     {
       "name": "Docs",
@@ -19,6 +23,10 @@
     {
       "name": "Docker",
       "path": "docker"
+    },
+    {
+      "name": "Archive",
+      "path": "archive"
     }
   ],
   "settings": {

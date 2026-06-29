@@ -1,4 +1,4 @@
-# Task Scheduler
+﻿# Task Scheduler
 
 ## Tarefa principal
 
@@ -11,7 +11,7 @@ Estado esperado: `Ready`.
 Acao:
 
 ```powershell
-powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\IA-LAB\scripts\startup_apps.ps1"
+powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\IA-LAB\scripts\startup\startup_apps.ps1"
 ```
 
 Gatilhos:
@@ -32,8 +32,8 @@ Devem permanecer desabilitadas:
 Script de configuracao:
 
 ```powershell
-C:\IA-LAB\scripts\configure_startup_tasks.ps1
-C:\IA-LAB\scripts\configure_maintenance_tasks.ps1
+C:\IA-LAB\scripts\setup\configure_startup_tasks.ps1
+C:\IA-LAB\scripts\setup\configure_maintenance_tasks.ps1
 ```
 
 Executar em PowerShell como Administrador.
@@ -44,11 +44,11 @@ As tarefas sao registradas como ocultas e executam o PowerShell com `-NonInterac
 
 | Tarefa | Frequencia | Script |
 | --- | --- | --- |
-| IA-LAB Watchdog | a cada 5 min | `watchdog.ps1` |
-| IA-LAB Healthcheck | a cada 15 min | `healthcheck.ps1` |
-| IA-LAB Config Backup | diario 22:00 | `backup_configs.ps1` |
-| IA-LAB Multipass Snapshot | semanal domingo 23:00 | `snapshot_multipass.ps1` + retencao `auto-*` dos ultimos 4 |
-| IA-LAB Cleanup Logs | semanal domingo 23:30 | `cleanup_logs.ps1` |
+| IA-LAB Watchdog | a cada 5 min | `scripts\maintenance\watchdog.ps1` |
+| IA-LAB Healthcheck | a cada 15 min | `scripts\maintenance\healthcheck.ps1` |
+| IA-LAB Config Backup | diario 22:00 | `scripts\maintenance\backup_configs.ps1` |
+| IA-LAB Multipass Snapshot | semanal domingo 23:00 | `scripts\maintenance\snapshot_multipass.ps1` + retencao `auto-*` dos ultimos 4 |
+| IA-LAB Cleanup Logs | semanal domingo 23:30 | `scripts\maintenance\cleanup_logs.ps1` |
 
 ## Modo silencioso
 
@@ -61,7 +61,8 @@ Um Windows Service real tambem seria possivel, mas exigiria um wrapper como WinS
 O healthcheck valida:
 
 - PX
-- Ollama
+- processos monitorados no host, por padrao `px` e `ollama`
+- Ollama GPU, CPU e roteador
 - Multipass
 - Docker
 - Open WebUI
