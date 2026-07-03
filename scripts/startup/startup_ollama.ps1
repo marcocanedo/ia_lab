@@ -8,19 +8,25 @@ $cpuPort = 11435
 $proxyUrl = "http://127.0.0.1:18080"
 $proxyPort = 18080
 $noProxy = "localhost,127.0.0.1,::1,0.0.0.0,10.14.0.226"
-$ollamaModelsRoot = "C:\IA-LAB\models\ollama"
+$labRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+$ollamaModelsRoot = Join-Path $labRoot "models\ollama"
 $flashAttention = "1"
 
 Write-Host "Configurando variaveis Ollama..."
 
-[Environment]::SetEnvironmentVariable("OLLAMA_HOST", $gpuHostValue, "User")
-[Environment]::SetEnvironmentVariable("OLLAMA_MODELS", $ollamaModelsRoot, "User")
-[Environment]::SetEnvironmentVariable("OLLAMA_FLASH_ATTENTION", $flashAttention, "User")
-[Environment]::SetEnvironmentVariable("HTTP_PROXY", $proxyUrl, "User")
-[Environment]::SetEnvironmentVariable("HTTPS_PROXY", $proxyUrl, "User")
-[Environment]::SetEnvironmentVariable("ALL_PROXY", $proxyUrl, "User")
-[Environment]::SetEnvironmentVariable("NO_PROXY", $noProxy, "User")
-[Environment]::SetEnvironmentVariable("no_proxy", $noProxy, "User")
+try {
+    [Environment]::SetEnvironmentVariable("OLLAMA_HOST", $gpuHostValue, "User")
+    [Environment]::SetEnvironmentVariable("OLLAMA_MODELS", $ollamaModelsRoot, "User")
+    [Environment]::SetEnvironmentVariable("OLLAMA_FLASH_ATTENTION", $flashAttention, "User")
+    [Environment]::SetEnvironmentVariable("HTTP_PROXY", $proxyUrl, "User")
+    [Environment]::SetEnvironmentVariable("HTTPS_PROXY", $proxyUrl, "User")
+    [Environment]::SetEnvironmentVariable("ALL_PROXY", $proxyUrl, "User")
+    [Environment]::SetEnvironmentVariable("NO_PROXY", $noProxy, "User")
+    [Environment]::SetEnvironmentVariable("no_proxy", $noProxy, "User")
+}
+catch [System.Security.SecurityException] {
+    Write-Warning "Nao foi possivel persistir variaveis no perfil; usando variaveis apenas neste processo."
+}
 
 $env:OLLAMA_HOST = $gpuHostValue
 $env:OLLAMA_MODELS = $ollamaModelsRoot
@@ -36,7 +42,17 @@ if (-not $pxListening) {
     Write-Warning "PX nao esta escutando em 127.0.0.1:$proxyPort. Downloads do Ollama podem falhar em rede corporativa."
 }
 
-$ollama = Get-Command ollama -ErrorAction Stop
+$ollama = Get-Command ollama -ErrorAction SilentlyContinue
+if (-not $ollama) {
+    $ollamaPath = Join-Path $env:LOCALAPPDATA "Programs\Ollama\ollama.exe"
+    if (-not (Test-Path -LiteralPath $ollamaPath)) {
+        throw "Ollama nao encontrado no PATH nem em $ollamaPath"
+    }
+    $ollamaExe = $ollamaPath
+}
+else {
+    $ollamaExe = $ollama.Source
+}
 $router = Join-Path $PSScriptRoot "ollama_router.ps1"
 $scriptsRoot = Split-Path -Parent $PSScriptRoot
 $logDir = Join-Path $scriptsRoot "logs"
@@ -63,7 +79,7 @@ function Start-OllamaBackend {
         "Remove-Item Env:OLLAMA_LLM_LIBRARY -ErrorAction SilentlyContinue;"
     }
 
-    $command = "`$env:OLLAMA_HOST='$HostValue'; `$env:OLLAMA_MODELS='$ollamaModelsRoot'; `$env:OLLAMA_FLASH_ATTENTION='$flashAttention'; $libraryCommand & '$($ollama.Source)' serve"
+    $command = "`$env:OLLAMA_HOST='$HostValue'; `$env:OLLAMA_MODELS='$ollamaModelsRoot'; `$env:OLLAMA_FLASH_ATTENTION='$flashAttention'; $libraryCommand & '$ollamaExe' serve"
     Start-Process -WindowStyle Hidden -FilePath "powershell.exe" -ArgumentList @(
         "-NoProfile",
         "-WindowStyle",

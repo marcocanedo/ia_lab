@@ -1,4 +1,4 @@
-﻿# Codex
+# Codex
 
 ## Papel no IA-LAB
 
@@ -15,8 +15,8 @@ Codex deve atuar como agente de automacao e desenvolvimento, usando scripts vers
 ## Comandos uteis
 
 ```powershell
-C:\IA-LAB\scripts\maintenance\healthcheck.ps1
-C:\IA-LAB\scripts\maintenance\backup_configs.ps1
+D:\IA-LAB\scripts\maintenance\healthcheck.ps1
+D:\IA-LAB\scripts\maintenance\backup_configs.ps1
 ```
 
 ## Areas futuras

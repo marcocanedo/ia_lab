@@ -1,4 +1,19 @@
-﻿# Troubleshooting
+# Troubleshooting
+
+## `opencode` nao encontrado no terminal
+
+Se a instalacao do `opencode` funcionou, mas o comando nao abre de qualquer pasta no Windows:
+
+- confirmar que `%APPDATA%\npm` esta no `PATH` do usuario
+- reiniciar o terminal depois de alterar o `PATH`
+- usar o comando `opencode`, nao `opencod`
+
+Validar:
+
+```powershell
+Get-Command opencode
+$env:Path -split ';' | Where-Object { $_ -ieq "$env:APPDATA\npm" }
+```
 
 ## Open WebUI retorna 500
 
@@ -70,14 +85,14 @@ multipass exec ia-lab -- docker exec open-webui curl --noproxy "*" http://10.14.
 Se `11434` e `11435` responderem, mas `11436` falhar, reiniciar apenas o startup do Ollama:
 
 ```powershell
-C:\IA-LAB\scripts\startup\startup_ollama.ps1
+D:\IA-LAB\scripts\startup\startup_ollama.ps1
 ```
 
 Validar logs:
 
 ```powershell
-Get-Content C:\IA-LAB\scripts\logs\ollama_router.err.log -Tail 80
-Get-Content C:\IA-LAB\scripts\logs\ollama_router.out.log -Tail 80
+Get-Content D:\IA-LAB\scripts\logs\ollama_router.err.log -Tail 80
+Get-Content D:\IA-LAB\scripts\logs\ollama_router.out.log -Tail 80
 ```
 
 ## VSCode Remote SSH

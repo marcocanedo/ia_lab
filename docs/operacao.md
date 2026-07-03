@@ -1,9 +1,9 @@
-﻿# Operacao diaria
+# Operacao diaria
 
 ## Comandos principais
 
 ```powershell
-cd C:\IA-LAB
+cd D:\IA-LAB
 .\scripts\maintenance\healthcheck.ps1
 .\scripts\maintenance\watchdog.ps1
 .\scripts\maintenance\backup_configs.ps1
@@ -30,15 +30,15 @@ nvidia-smi
 ## Inicializacao manual
 
 ```powershell
-C:\IA-LAB\scripts\startup\startup_apps.ps1
+D:\IA-LAB\scripts\startup\startup_apps.ps1
+D:\IA-LAB\scripts\startup\startup_vm.ps1
 ```
 
 Ordem executada:
 
-1. PX.
-2. Ollama GPU, CPU e roteador.
-3. VM Multipass `ia-lab`.
-4. Portproxy local do Open WebUI.
+1. VM Multipass `ia-lab` e portproxy local.
+2. PX.
+3. Ollama GPU, CPU e roteador.
 
 ## Proximos links
 

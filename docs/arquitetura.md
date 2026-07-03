@@ -1,4 +1,4 @@
-﻿# Arquitetura
+# Arquitetura
 
 ## Visao geral
 
@@ -34,7 +34,7 @@ Browser -> 127.0.0.1:3000 -> Windows portproxy -> VM ia-lab:3000 -> Docker open-
 ## Persistencia
 
 - Dados Open WebUI: volume Docker nomeado `open-webui`.
-- Scripts: `C:\IA-LAB\scripts`.
-- Logs: `C:\IA-LAB\scripts\logs`.
-- Backups: `C:\IA-LAB\backups`.
-- Compose: `C:\IA-LAB\docker`.
+- Scripts: `D:\IA-LAB\scripts`.
+- Logs: `D:\IA-LAB\scripts\logs`.
+- Backups: `D:\IA-LAB\backups`.
+- Compose: `D:\IA-LAB\docker`.

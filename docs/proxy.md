@@ -1,4 +1,4 @@
-﻿# Proxy
+# Proxy
 
 PX roda no Windows Host em:
 
@@ -36,7 +36,7 @@ Arquivo na VM:
 Script:
 
 ```powershell
-C:\IA-LAB\scripts\setup\configure_vm_proxy.ps1
+D:\IA-LAB\scripts\setup\configure_vm_proxy.ps1
 ```
 
 ## Git

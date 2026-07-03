@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$script:LabRoot = "C:\IA-LAB"
+$script:LabRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $script:LlamaRoot = Join-Path $script:LabRoot "llama.cpp"
 $script:ModelRoot = Join-Path $script:LabRoot "models\gguf"
 $script:LogRoot = Join-Path $script:LabRoot "scripts\logs\llamacpp"
@@ -27,7 +27,7 @@ function Get-LlamaServerPath {
         Sort-Object LastWriteTime -Descending |
         Select-Object -First 1
     if (-not $server) {
-        throw "llama-server.exe nao encontrado. Execute C:\IA-LAB\scripts\llamacpp\install_llamacpp.ps1 primeiro."
+        throw "llama-server.exe nao encontrado. Execute scripts\llamacpp\install_llamacpp.ps1 primeiro."
     }
 
     $server.FullName | Set-Content -Encoding ASCII -LiteralPath $currentFile

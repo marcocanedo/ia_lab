@@ -1,4 +1,4 @@
-﻿# Ollama
+# Ollama
 
 Ollama roda no Windows Host com dois backends e um roteador local.
 
@@ -75,5 +75,5 @@ multipass exec ia-lab -- docker exec open-webui curl --noproxy "*" http://10.14.
 ## Recuperacao
 
 ```powershell
-C:\IA-LAB\scripts\startup\startup_ollama.ps1
+D:\IA-LAB\scripts\startup\startup_ollama.ps1
 ```

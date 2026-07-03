@@ -7,7 +7,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$backupRoot = "C:\IA-LAB\scripts\logs\llamacpp\network"
+$backupRoot = "D:\IA-LAB\scripts\logs\llamacpp\network"
 $backupDir = Join-Path $backupRoot ("configure_vm_access_{0:yyyyMMdd_HHmmss}" -f (Get-Date))
 New-Item -ItemType Directory -Path $backupDir -Force | Out-Null
 

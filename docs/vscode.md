@@ -1,11 +1,11 @@
-﻿# VSCode
+# VSCode
 
 ## Workspace
 
 Arquivo:
 
 ```text
-C:\IA-LAB\IA-LAB.code-workspace
+D:\IA-LAB\IA-LAB.code-workspace
 ```
 
 ## Extensoes recomendadas
@@ -13,7 +13,7 @@ C:\IA-LAB\IA-LAB.code-workspace
 Definidas em:
 
 ```text
-C:\IA-LAB\.vscode\extensions.json
+D:\IA-LAB\.vscode\extensions.json
 ```
 
 Incluem:
@@ -41,7 +41,7 @@ Host ia-lab
 O script abaixo atualiza automaticamente o IP do host `ia-lab` quando a VM muda de endereco:
 
 ```powershell
-C:\IA-LAB\scripts\startup\update_ssh_config.ps1
+D:\IA-LAB\scripts\startup\update_ssh_config.ps1
 ```
 
 O `startup_vm.ps1` tambem chama esse script durante a inicializacao.

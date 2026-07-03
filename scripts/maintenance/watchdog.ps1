@@ -37,14 +37,14 @@ try {
 }
 catch {
     Write-Log "Open WebUI falhou: $($_.Exception.Message)"
-    Write-Log "Reiniciando container open-webui na VM ia-lab"
-    multipass exec ia-lab -- docker restart open-webui | Out-Null
+    Write-Log "Reiniciando container open-webui na distro Ubuntu-24.04"
+    wsl -d Ubuntu-24.04 -- docker restart open-webui | Out-Null
     Start-Sleep -Seconds 15
 }
 
 if (-not (Test-PortQuiet 3000)) {
-    Write-Log "Portproxy/Open WebUI indisponivel; executando startup_vm.ps1"
-    & (Join-Path $startupRoot "startup_vm.ps1")
+    Write-Log "Open WebUI indisponivel; executando startup_wsl.ps1"
+    & (Join-Path $startupRoot "startup_wsl.ps1")
 }
 
 Write-Log "Watchdog concluido"

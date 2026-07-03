@@ -23,6 +23,7 @@ Esta documentacao foi organizada para navegar por tarefa, nao por nome de arquiv
 - [Proxy](proxy.md): PX e proxy APT da VM.
 - [Multipass](multipass.md): VM `ia-lab`.
 - [Docker](docker.md): Open WebUI dentro da VM.
+- [Rebuild da VM](multipass.md): reprovisionamento limpo da camada Multipass.
 
 ## Manter e restaurar
 

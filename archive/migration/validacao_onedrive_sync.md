@@ -25,4 +25,4 @@ Validar se o backup `BACKUP_WORKSTATION_2026` esta integro e pronto para restaur
 - A pendencia documentada de `C:\Users\01481911775\.ssh\multipass_ia_lab` permaneceu registrada no relatorio original do backup, mas nao houve indicio de falha de sincronizacao na validacao final do OneDrive.
 
 ## Conclusao
-O backup foi considerado consistente e pronto para restauracao na nova workstation, sem pendencias de sincronizacao, erros ou conflitos no OneDrive.
+O backup foi preservado apenas como fonte auxiliar e e incompleto para restauracao integral do IA-LAB: ele nao contem o VHDX original da VM `ia-lab`. Nao deve ser tratado como fonte primaria da migracao.

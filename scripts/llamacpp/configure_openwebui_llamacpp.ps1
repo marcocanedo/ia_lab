@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$root = "C:\IA-LAB"
+$root = "D:\IA-LAB"
 $dockerDir = Join-Path $root "docker"
 $backupDir = Join-Path $root ("backups\llamacpp\openwebui_apply_{0:yyyyMMdd_HHmmss}" -f (Get-Date))
 New-Item -ItemType Directory -Path $backupDir -Force | Out-Null

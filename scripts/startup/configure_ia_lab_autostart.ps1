@@ -36,7 +36,7 @@ $scriptRoot = Split-Path -Parent $PSCommandPath
 $startupScript = Join-Path $scriptRoot 'startup_vm.ps1'
 $userTaskName = 'IA-LAB Startup'
 $bootTaskPath = '\IA-LAB Multipass Boot'
-$bootTaskCommand = 'powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\IA-LAB\scripts\startup\startup_vm.ps1"'
+$bootTaskCommand = 'powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "D:\IA-LAB\scripts\startup\startup_vm.ps1"'
 
 if (-not (Test-Path $startupScript)) {
     throw "Script nao encontrado: $startupScript"

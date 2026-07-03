@@ -4,10 +4,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$paths = @(
-    "C:\IA-LAB\scripts\logs",
-    "C:\IA-LAB\backups\reports"
-)
+$scriptsRoot = Split-Path -Parent $PSScriptRoot
+$paths = @(Join-Path $scriptsRoot "logs")
 
 $cutoff = (Get-Date).AddDays(-$RetentionDays)
 

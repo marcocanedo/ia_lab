@@ -1,8 +1,7 @@
 param(
     [string]$HostListenAddress = "10.14.0.226",
     [int]$ListenPort = 3000,
-    [string]$VmName = "ia-lab",
-    [string]$VmAddress,
+    [string]$VmAddress = "localhost",
     [int]$VmPort = 3000,
     [string]$FirewallRuleName = "IA-LAB OpenWebUI Corporate 3000",
     [string]$RemoteIp = "LocalSubnet",
@@ -47,25 +46,9 @@ function Test-TcpPort {
     return Test-NetConnection $Address -Port $Port -InformationLevel Quiet
 }
 
-function Get-MultipassVmIPv4 {
-    param([string]$Name)
+# Parametro $VmName removido - WSL2 acessivel via localhost
 
-    $ipv4Line = multipass info $Name | Select-String "^\s*IPv4:" | Select-Object -First 1
-    if (-not $ipv4Line) {
-        throw "Nao foi possivel detectar IPv4 da VM $Name."
-    }
-
-    $address = (($ipv4Line.ToString() -split ":", 2)[1]).Trim()
-    if (-not $address) {
-        throw "IPv4 vazio para VM $Name."
-    }
-
-    return $address
-}
-
-if (-not $VmAddress) {
-    $VmAddress = Get-MultipassVmIPv4 -Name $VmName
-}
+# Parametro $VmName removido - WSL2 acessivel via localhost
 
 New-Item -ItemType Directory -Force -Path $backupDir | Out-Null
 

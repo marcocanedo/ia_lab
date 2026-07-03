@@ -1,4 +1,4 @@
-﻿# Contexto geral do IA-LAB para GPT
+# Contexto geral do IA-LAB para GPT
 
 Atualizado em: 2026-06-01
 
@@ -73,7 +73,7 @@ Pendencia: existe um portproxy corporativo antigo `10.14.0.226:3000 -> 172.21.15
 O Compose fica em:
 
 ```text
-C:\IA-LAB\docker\docker-compose.yml
+D:\IA-LAB\docker\docker-compose.yml
 ```
 
 Pontos relevantes:
@@ -90,7 +90,7 @@ Pontos relevantes:
 Arquivo de exemplo de ambiente:
 
 ```text
-C:\IA-LAB\docker\.env.example
+D:\IA-LAB\docker\.env.example
 ```
 
 O arquivo real `docker\.env` e local e fica ignorado no Git.
@@ -100,10 +100,10 @@ O arquivo real `docker\.env` e local e fica ignorado no Git.
 Pasta raiz:
 
 ```text
-C:\IA-LAB\scripts
+D:\IA-LAB\scripts
 ```
 
-Inicializacao (`C:\IA-LAB\scripts\startup`):
+Inicializacao (`D:\IA-LAB\scripts\startup`):
 
 - `startup_apps.ps1`: orquestra a inicializacao geral.
 - `startup_px.ps1`: inicia PX e aguarda porta `18080`.
@@ -112,7 +112,7 @@ Inicializacao (`C:\IA-LAB\scripts\startup`):
 - `startup_vm.ps1`: inicia VM `ia-lab`, detecta IP, atualiza SSH config, recria portproxy e aguarda Open WebUI na porta `3000`.
 - `update_ssh_config.ps1`: atualiza `~\.ssh\config` para VSCode Remote acessar a VM.
 
-Operacao e manutencao (`C:\IA-LAB\scripts\maintenance`):
+Operacao e manutencao (`D:\IA-LAB\scripts\maintenance`):
 
 - `healthcheck.ps1`: valida saude geral e gera relatorios JSON/TXT.
 - `watchdog.ps1`: tenta recuperar PX, Ollama ou Open WebUI quando indisponiveis.
@@ -121,14 +121,14 @@ Operacao e manutencao (`C:\IA-LAB\scripts\maintenance`):
 - `cleanup_multipass_snapshots.ps1`: mantem apenas os ultimos snapshots automaticos `auto-*`.
 - `cleanup_logs.ps1`: remove logs e relatorios antigos.
 
-Setup (`C:\IA-LAB\scripts\setup`):
+Setup (`D:\IA-LAB\scripts\setup`):
 
 - `configure_startup_tasks.ps1`: registra tarefa principal de startup.
 - `configure_maintenance_tasks.ps1`: registra tarefas periodicas de manutencao.
 - `configure_vm_proxy.ps1`: configura proxy APT dentro da VM.
 - `git_setup.ps1`: configura Git local/global para uso com proxy PX quando necessario.
 
-Ferramentas auxiliares (`C:\IA-LAB\scripts\tools`) guardam inventario, rankings de consumo e manifesto de backup. Artefatos historicos ficam em `C:\IA-LAB\archive`.
+Ferramentas auxiliares (`D:\IA-LAB\scripts\tools`) guardam inventario, rankings de consumo e manifesto de backup. Artefatos historicos ficam em `D:\IA-LAB\archive`.
 
 ## Task Scheduler
 
@@ -141,7 +141,7 @@ IA-LAB Startup
 Acao:
 
 ```powershell
-powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\IA-LAB\scripts\startup\startup_apps.ps1"
+powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "D:\IA-LAB\scripts\startup\startup_apps.ps1"
 ```
 
 Gatilhos:
@@ -171,8 +171,8 @@ As tarefas sao registradas como ocultas e usam `-NonInteractive` e `-WindowStyle
 Para registrar ou atualizar as tarefas reais no Windows, executar em PowerShell como Administrador:
 
 ```powershell
-C:\IA-LAB\scripts\setup\configure_startup_tasks.ps1
-C:\IA-LAB\scripts\setup\configure_maintenance_tasks.ps1
+D:\IA-LAB\scripts\setup\configure_startup_tasks.ps1
+D:\IA-LAB\scripts\setup\configure_maintenance_tasks.ps1
 ```
 
 ## Healthcheck
@@ -180,7 +180,7 @@ C:\IA-LAB\scripts\setup\configure_maintenance_tasks.ps1
 Script:
 
 ```powershell
-C:\IA-LAB\scripts\maintenance\healthcheck.ps1
+D:\IA-LAB\scripts\maintenance\healthcheck.ps1
 ```
 
 Valida:
@@ -201,7 +201,7 @@ Valida:
 Relatorios:
 
 ```text
-C:\IA-LAB\backups\reports
+D:\IA-LAB\backups\reports
 ```
 
 O script retorna:
@@ -216,7 +216,7 @@ O healthcheck nao corrige o ambiente; ele apenas diagnostica e registra. A recup
 Script:
 
 ```powershell
-C:\IA-LAB\scripts\maintenance\watchdog.ps1
+D:\IA-LAB\scripts\maintenance\watchdog.ps1
 ```
 
 Funcao:
@@ -229,7 +229,7 @@ Funcao:
 Log:
 
 ```text
-C:\IA-LAB\scripts\logs
+D:\IA-LAB\scripts\logs
 ```
 
 ## Backups e snapshots
@@ -237,13 +237,13 @@ C:\IA-LAB\scripts\logs
 Backup de configuracao:
 
 ```powershell
-C:\IA-LAB\scripts\maintenance\backup_configs.ps1
+D:\IA-LAB\scripts\maintenance\backup_configs.ps1
 ```
 
 Destino:
 
 ```text
-C:\IA-LAB\backups\configs
+D:\IA-LAB\backups\configs
 ```
 
 Inclui:
@@ -260,7 +260,7 @@ Inclui:
 Snapshot Multipass:
 
 ```powershell
-C:\IA-LAB\scripts\maintenance\snapshot_multipass.ps1
+D:\IA-LAB\scripts\maintenance\snapshot_multipass.ps1
 ```
 
 Politica:
@@ -322,7 +322,7 @@ Modelos observados no roteador em 2026-06-01:
 Executar manualmente:
 
 ```powershell
-cd C:\IA-LAB
+cd D:\IA-LAB
 .\scripts\maintenance\healthcheck.ps1
 .\scripts\maintenance\watchdog.ps1
 .\scripts\maintenance\backup_configs.ps1

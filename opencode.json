@@ -1,0 +1,68 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "reprllm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "REPR LiteLLM",
+      "options": {
+        "baseURL": "https://reprllm.online/v1",
+        "apiKey": "{env:REPRLLM_API_KEY}"
+      },
+      "models": {
+        "qwen3-coder-480b-a35b-instruct-maas": {
+          "name": "01 Qwen3 Coder | padrão código | custo baixo/médio | eficiência alta"
+        },
+        "deepseek-v3.2-maas": {
+          "name": "02 DeepSeek V3.2 | tarefas simples/código | custo baixo | eficiência média/alta"
+        },
+        "qwen3-next-80b-a3b-instruct-maas": {
+          "name": "03 Qwen3 Next 80B | execução econômica | custo baixo | eficiência média"
+        },
+        "qwen3-next-80b-a3b-thinking-maas": {
+          "name": "04 Qwen3 Next Thinking | raciocínio econômico | custo baixo/médio | eficiência média/alta"
+        },
+        "claude-sonnet-4-6": {
+          "name": "05 Claude Sonnet 4.6 | debug/arquitetura | custo médio/alto | eficiência alta"
+        },
+        "claude-fable-5": {
+          "name": "06 Claude Fable 5 | alternativa geral | custo médio/alto | eficiência média/alta"
+        },
+        "claude-opus-4-8-low": {
+          "name": "07 Claude Opus 4.8 Low | tarefa difícil moderada | custo alto | eficiência alta"
+        },
+        "claude-opus-4-8-medium": {
+          "name": "08 Claude Opus 4.8 Medium | tarefa difícil | custo alto | eficiência alta"
+        },
+        "claude-opus-4-8-high": {
+          "name": "09 Claude Opus 4.8 High | último recurso técnico | custo muito alto | eficiência muito alta"
+        },
+        "claude-opus-4-8-xhigh": {
+          "name": "10 Claude Opus 4.8 XHigh | problema crítico | custo máximo | eficiência máxima"
+        },
+        "gemini-2.5-flash-lite": {
+          "name": "11 Gemini 2.5 Flash Lite | resumo/tarefa leve | custo baixo | eficiência média"
+        },
+        "gemini-3.5-flash": {
+          "name": "12 Gemini 3.5 Flash | tarefa rápida geral | custo baixo/médio | eficiência média"
+        },
+        "gemini-2.5-pro": {
+          "name": "13 Gemini 2.5 Pro | análise geral longa | custo médio | eficiência média/alta"
+        },
+        "gpt-oss-120b-maas": {
+          "name": "14 GPT OSS 120B | alternativa aberta | custo baixo/médio | eficiência variável"
+        },
+        "gpt-oss-20b-maas": {
+          "name": "15 GPT OSS 20B | tarefa simples barata | custo baixo | eficiência baixa/média"
+        },
+        "qwen3-235b-a22b-instruct-2507-maas": {
+          "name": "16 Qwen3 235B | geral econômico | custo baixo | eficiência média/alta"
+        },
+        "gemini-3.1-flash-lite": {
+          "name": "17 Gemini 3.1 Flash Lite | texto leve | custo baixo | eficiência média"
+        }
+      }
+    }
+  },
+  "model": "reprllm/qwen3-coder-480b-a35b-instruct-maas",
+  "shell": "pwsh"
+}

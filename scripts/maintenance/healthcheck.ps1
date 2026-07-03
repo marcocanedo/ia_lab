@@ -4,8 +4,8 @@ param(
 
 $ErrorActionPreference = "Continue"
 
-$root = "C:\IA-LAB"
-$reportDir = Join-Path $root "backups\reports"
+$scriptsRoot = Split-Path -Parent $PSScriptRoot
+$reportDir = Join-Path $scriptsRoot "logs\healthcheck"
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
 $jsonReport = Join-Path $reportDir "healthcheck_$timestamp.json"
 $textReport = Join-Path $reportDir "healthcheck_$timestamp.txt"
@@ -94,7 +94,7 @@ $checks.Add((Test-Port "PX port" "127.0.0.1" 18080))
 $checks.Add((Test-Port "Ollama GPU port" "127.0.0.1" 11434))
 $checks.Add((Test-Port "Ollama CPU port" "127.0.0.1" 11435))
 $checks.Add((Test-Port "Ollama router port" "127.0.0.1" 11436))
-$checks.Add((Test-Port "Open WebUI portproxy" "127.0.0.1" 3000))
+$checks.Add((Test-Port "Open WebUI" "127.0.0.1" 3000))
 
 try {
     $ollamaTags = Invoke-RestMethod -Uri "http://127.0.0.1:11436/api/tags" -TimeoutSec 10
@@ -113,15 +113,15 @@ catch {
     $checks.Add((New-Check "Open WebUI API" "FAIL" $_.Exception.Message))
 }
 
-$multipass = Invoke-CommandText "multipass info ia-lab"
-if ($multipass.exit_code -eq 0 -and $multipass.output -match "State:\s+Running") {
-    $checks.Add((New-Check "Multipass VM ia-lab" "OK" "VM running"))
+$multipass = Invoke-CommandText "wsl -d Ubuntu-24.04 -- true"
+if ($multipass.exit_code -eq 0) {
+    $checks.Add((New-Check "WSL2 Ubuntu-24.04" "OK" "Distro responde"))
 }
 else {
-    $checks.Add((New-Check "Multipass VM ia-lab" "FAIL" $multipass.output))
+    $checks.Add((New-Check "WSL2 Ubuntu-24.04" "FAIL" $multipass.output))
 }
 
-$docker = Invoke-CommandText "multipass exec ia-lab -- docker inspect -f '{{.State.Health.Status}} {{.State.Status}}' open-webui"
+$docker = Invoke-CommandText "wsl -d Ubuntu-24.04 -- docker inspect -f '{{.State.Health.Status}} {{.State.Status}}' open-webui"
 if ($docker.exit_code -eq 0 -and $docker.output -match "healthy\s+running") {
     $checks.Add((New-Check "Docker Open WebUI" "OK" $docker.output.Trim()))
 }
@@ -129,12 +129,23 @@ else {
     $checks.Add((New-Check "Docker Open WebUI" "FAIL" $docker.output))
 }
 
-$portproxy = Invoke-CommandText "netsh interface portproxy show all"
-if ($portproxy.output -match "127\.0\.0\.1\s+3000\s+\d+\.\d+\.\d+\.\d+\s+3000") {
-    $checks.Add((New-Check "Windows portproxy" "OK" "127.0.0.1:3000 mapped to VM:3000"))
+$wslConfigPath = Join-Path $env:USERPROFILE ".wslconfig"
+$wslConfig = ""
+if (Test-Path -LiteralPath $wslConfigPath) {
+    $wslConfig = Get-Content -LiteralPath $wslConfigPath -Raw
+}
+
+if ($wslConfig -match '(?im)^\s*networkingMode\s*=\s*mirrored\s*$') {
+    $checks.Add((New-Check "WSL networking" "OK" "mirrored networking with localhost forwarding"))
 }
 else {
-    $checks.Add((New-Check "Windows portproxy" "FAIL" $portproxy.output))
+    $portproxy = Invoke-CommandText "netsh interface portproxy show all"
+    if ($portproxy.output -match "127\.0\.0\.1\s+3000\s+\d+\.\d+\.\d+\.\d+\s+3000") {
+        $checks.Add((New-Check "Windows portproxy" "OK" "127.0.0.1:3000 mapped to WSL:3000"))
+    }
+    else {
+        $checks.Add((New-Check "Windows portproxy" "FAIL" $portproxy.output))
+    }
 }
 
 foreach ($processName in $MonitoredProcesses) {

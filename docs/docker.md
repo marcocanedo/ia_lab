@@ -1,4 +1,4 @@
-﻿# Docker
+# Docker
 
 Docker roda dentro da VM Multipass `ia-lab`.
 
@@ -24,7 +24,7 @@ multipass exec ia-lab -- docker inspect open-webui
 Arquivo:
 
 ```text
-C:\IA-LAB\docker\docker-compose.yml
+D:\IA-LAB\docker\docker-compose.yml
 ```
 
 O volume e externo para preservar dados existentes:
@@ -52,4 +52,4 @@ Versao validada:
 Docker Compose version 2.40.3+ds1-0ubuntu1
 ```
 
-O comando `docker compose config` foi executado com sucesso usando os arquivos em `C:\IA-LAB\docker`.
+O comando `docker compose config` foi executado com sucesso usando os arquivos em `D:\IA-LAB\docker`.

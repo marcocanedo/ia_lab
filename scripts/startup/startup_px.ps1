@@ -1,6 +1,7 @@
 $ErrorActionPreference = "Stop"
 
-$pxPath = "C:\IA-LAB\px\px.exe"
+$labRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+$pxPath = Join-Path $labRoot "px\px.exe"
 $port = 18080
 
 Write-Host "Iniciando PX..."
@@ -10,14 +11,25 @@ if (-not (Test-Path $pxPath)) {
 }
 
 $pxRunning = Get-Process px -ErrorAction SilentlyContinue | Where-Object {
-    $_.Path -eq $pxPath
+    try { $_.Path -eq $pxPath } catch { $false }
+}
+
+if ($pxRunning) {
+    $listenAll = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue |
+        Where-Object { $_.LocalAddress -eq "0.0.0.0" }
+    if (-not $listenAll) {
+        Write-Host "PX em execucao mas nao escuta em 0.0.0.0. Reiniciando..."
+        Stop-Process -Id $pxRunning.Id -Force -ErrorAction SilentlyContinue
+        Start-Sleep -Seconds 2
+        $pxRunning = $null
+    }
+    else {
+        Write-Host "PX ja esta em execucao em 0.0.0.0:$port."
+    }
 }
 
 if (-not $pxRunning) {
     Start-Process -WindowStyle Hidden $pxPath -ArgumentList "--listen=0.0.0.0 --port=$port"
-}
-else {
-    Write-Host "PX ja esta em execucao."
 }
 
 Write-Host "Aguardando PX na porta $port..."

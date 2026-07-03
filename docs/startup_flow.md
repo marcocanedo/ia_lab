@@ -1,29 +1,31 @@
-﻿# Startup Flow
+# Startup Flow
 
-## Tarefa principal
+## Tarefas principais
 
 Task Scheduler:
 
 ```text
-IA-LAB Startup
+IA-LAB VM Boot
+IA-LAB Host Services
 ```
 
-Acao:
+Acoes:
 
 ```powershell
-powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\IA-LAB\scripts\startup\startup_apps.ps1"
+powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "D:\IA-LAB\scripts\startup\startup_vm.ps1"
+powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "D:\IA-LAB\scripts\startup\startup_apps.ps1"
 ```
 
 Gatilhos:
 
-- boot do Windows, atraso 30 segundos
-- logon do usuario, atraso 30 segundos
+- boot do Windows, atraso 30 segundos: `IA-LAB VM Boot`
+- logon do usuario, atraso 20 segundos: `IA-LAB Host Services`
 
 ## Ordem
 
-1. `startup_px.ps1`
-2. `startup_ollama.ps1`
-3. `startup_vm.ps1`
+1. `startup_vm.ps1` no boot do host.
+2. `startup_px.ps1` no logon do usuario.
+3. `startup_ollama.ps1` no logon do usuario.
 
 ## Controles implementados
 
@@ -33,6 +35,7 @@ Gatilhos:
 - Log via transcript em `scripts\logs`.
 - Execucao silenciosa via Task Scheduler oculto e PowerShell `-WindowStyle Hidden`.
 - Tarefas antigas desabilitadas para evitar execucao concorrente.
+- Se a VM tiver sido recriada do zero, `startup_vm.ps1` recria o `open-webui` via Compose quando o container ainda nao existir.
 
 ## Race conditions mitigadas
 

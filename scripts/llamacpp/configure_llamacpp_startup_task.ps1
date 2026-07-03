@@ -4,7 +4,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $taskName = "IA-LAB llama.cpp Startup"
-$scriptPath = "C:\IA-LAB\scripts\llamacpp\start_all_llamacpp.ps1"
+$scriptPath = Join-Path $PSScriptRoot "start_all_llamacpp.ps1"
 
 if (-not $EnableAutoStart) {
     Write-Host "Nenhuma tarefa foi registrada. Use -EnableAutoStart para criar a tarefa opcional $taskName."

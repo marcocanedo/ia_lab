@@ -8,7 +8,6 @@ Laboratorio local de IA em Windows com PX, Ollama, Multipass, Docker, Open WebUI
 - [Operacao diaria](docs/operacao.md)
 - [Troubleshooting](docs/troubleshooting.md)
 - [Arquitetura](docs/arquitetura.md)
-- [Backup e restore](docs/backup_restore.md)
 
 ## Acesso rapido
 
@@ -24,32 +23,32 @@ Laboratorio local de IA em Windows com PX, Ollama, Multipass, Docker, Open WebUI
 ## Comandos essenciais
 
 ```powershell
-cd C:\IA-LAB
+cd D:\IA-LAB
 .\scripts\maintenance\healthcheck.ps1
 .\scripts\maintenance\watchdog.ps1
-.\scripts\maintenance\backup_configs.ps1
 ```
 
 ## Estrutura
 
 - `scripts\startup`: inicializacao do PX, Ollama, VM e Open WebUI.
-- `scripts\maintenance`: healthcheck, watchdog, backup, snapshots e limpeza.
+- `scripts\maintenance`: healthcheck, watchdog e retencao de logs/relatorios.
 - `scripts\setup`: configuracao de Task Scheduler, proxy, firewall e Git.
-- `scripts\tools`: inventario, manifestos e ferramentas auxiliares.
+- `scripts\tools`: inventario e ferramentas auxiliares.
 - `docs`: portal navegavel e guias tecnicos.
 - `archive`: artefatos historicos preservados fora da operacao diaria.
 
 ## Agendamento
 
-A tarefa principal esperada e `IA-LAB Startup`, apontando para:
+A inicializacao usa duas tarefas:
 
 ```text
-C:\IA-LAB\scripts\startup\startup_apps.ps1
+IA-LAB VM Boot       -> scripts\startup\startup_vm.ps1 (SYSTEM, no boot)
+IA-LAB Host Services -> scripts\startup\startup_apps.ps1 (usuario, no logon)
 ```
 
 Depois de reorganizar ou restaurar o projeto, recrie as tarefas em PowerShell como Administrador:
 
 ```powershell
-C:\IA-LAB\scripts\setup\configure_startup_tasks.ps1
-C:\IA-LAB\scripts\setup\configure_maintenance_tasks.ps1
+D:\IA-LAB\scripts\setup\configure_startup_tasks.ps1
+D:\IA-LAB\scripts\setup\configure_maintenance_tasks.ps1
 ```

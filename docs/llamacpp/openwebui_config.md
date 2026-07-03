@@ -1,4 +1,4 @@
-﻿# Open WebUI com llama.cpp
+# Open WebUI com llama.cpp
 
 O Ollama continua ativo no Open WebUI via:
 
@@ -20,13 +20,13 @@ OPENAI_API_KEYS=dummy-key;dummy-key;dummy-key
 2. Em PowerShell elevado, aplique o acesso VM:
 
 ```powershell
-C:\IA-LAB\scripts\llamacpp\configure_llamacpp_vm_access.ps1
+D:\IA-LAB\scripts\llamacpp\configure_llamacpp_vm_access.ps1
 ```
 
 3. Aplique o Compose do Open WebUI:
 
 ```powershell
-C:\IA-LAB\scripts\llamacpp\configure_openwebui_llamacpp.ps1
+D:\IA-LAB\scripts\llamacpp\configure_openwebui_llamacpp.ps1
 ```
 
 ## Alternativa manual

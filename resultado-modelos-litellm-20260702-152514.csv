@@ -1,0 +1,159 @@
+﻿"Modelo","Status","HttpStatus","DuracaoMs","Resposta","ErroResumo","ErroCompleto"
+"all-team-models","FALHOU","400","1823","","/chat/completions: Invalid model name passed in model=all-team-models. Call `/v1/models` to view available models for your key.","{""error"":{""message"":""/chat/completions: Invalid model name passed in model=all-team-models. Call `/v1/models` to view available models for your key."",""type"":""None"",""param"":""None"",""code"":""400"",""provider_specific_fields"":{""error"":""/chat/completions: Invalid model name passed in model=all-team-models. Call `/v1/models` to view available models for your key.""}}}"
+"claude-fable-5","OK","200","1552",,"",""
+"claude-haiku-4-5","FALHOU","404","2408","","litellm.NotFoundError: Vertex_aiException - {
+  ""error"": {
+    ""code"": 404,
+    ""message"": ""Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-haiku-4-5` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations."",
+    ""status"": ""NOT_FOUND""
+  }
+}
+. Received Model Group=claude-haiku-4-5
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.NotFoundError: Vertex_aiException - {\n  \""error\"": {\n    \""code\"": 404,\n    \""message\"": \""Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-haiku-4-5` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\"",\n    \""status\"": \""NOT_FOUND\""\n  }\n}\n. Received Model Group=claude-haiku-4-5\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""404""}}"
+"claude-opus-4","FALHOU","404","2792","","litellm.NotFoundError: Vertex_aiException - {
+  ""error"": {
+    ""code"": 404,
+    ""message"": ""Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-opus-4` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations."",
+    ""status"": ""NOT_FOUND""
+  }
+}
+. Received Model Group=claude-opus-4
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.NotFoundError: Vertex_aiException - {\n  \""error\"": {\n    \""code\"": 404,\n    \""message\"": \""Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-opus-4` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\"",\n    \""status\"": \""NOT_FOUND\""\n  }\n}\n. Received Model Group=claude-opus-4\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""404""}}"
+"claude-opus-4-1","FALHOU","404","798","","litellm.NotFoundError: Vertex_aiException - {
+  ""error"": {
+    ""code"": 404,
+    ""message"": ""Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-opus-4-1` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations."",
+    ""status"": ""NOT_FOUND""
+  }
+}
+. Received Model Group=claude-opus-4-1
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.NotFoundError: Vertex_aiException - {\n  \""error\"": {\n    \""code\"": 404,\n    \""message\"": \""Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-opus-4-1` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\"",\n    \""status\"": \""NOT_FOUND\""\n  }\n}\n. Received Model Group=claude-opus-4-1\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""404""}}"
+"claude-opus-4-5","FALHOU","404","4461","","litellm.NotFoundError: Vertex_aiException - {
+  ""error"": {
+    ""code"": 404,
+    ""message"": ""Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-opus-4-5` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations."",
+    ""status"": ""NOT_FOUND""
+  }
+}
+. Received Model Group=claude-opus-4-5
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.NotFoundError: Vertex_aiException - {\n  \""error\"": {\n    \""code\"": 404,\n    \""message\"": \""Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-opus-4-5` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\"",\n    \""status\"": \""NOT_FOUND\""\n  }\n}\n. Received Model Group=claude-opus-4-5\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""404""}}"
+"claude-opus-4-6","FALHOU","404","1533","","litellm.NotFoundError: Vertex_aiException - {
+  ""error"": {
+    ""code"": 404,
+    ""message"": ""Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-opus-4-6` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations."",
+    ""status"": ""NOT_FOUND""
+  }
+}
+. Received Model Group=claude-opus-4-6
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.NotFoundError: Vertex_aiException - {\n  \""error\"": {\n    \""code\"": 404,\n    \""message\"": \""Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-opus-4-6` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\"",\n    \""status\"": \""NOT_FOUND\""\n  }\n}\n. Received Model Group=claude-opus-4-6\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""404""}}"
+"claude-opus-4-7","OK","200","1775","ok","",""
+"claude-opus-4-8-high","OK","200","3769","Ok","",""
+"claude-opus-4-8-low","OK","200","2263","ok","",""
+"claude-opus-4-8-max","OK","200","1130","ok","",""
+"claude-opus-4-8-medium","OK","200","1065","ok","",""
+"claude-opus-4-8-xhigh","OK","200","2018","Ok","",""
+"claude-sonnet-4","FALHOU","404","1223","","litellm.NotFoundError: Vertex_aiException - {
+  ""error"": {
+    ""code"": 404,
+    ""message"": ""Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-sonnet-4` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations."",
+    ""status"": ""NOT_FOUND""
+  }
+}
+. Received Model Group=claude-sonnet-4
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.NotFoundError: Vertex_aiException - {\n  \""error\"": {\n    \""code\"": 404,\n    \""message\"": \""Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-sonnet-4` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\"",\n    \""status\"": \""NOT_FOUND\""\n  }\n}\n. Received Model Group=claude-sonnet-4\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""404""}}"
+"claude-sonnet-4-5","FALHOU","404","1390","","litellm.NotFoundError: Vertex_aiException - {
+  ""error"": {
+    ""code"": 404,
+    ""message"": ""Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-sonnet-4-5` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations."",
+    ""status"": ""NOT_FOUND""
+  }
+}
+. Received Model Group=claude-sonnet-4-5
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.NotFoundError: Vertex_aiException - {\n  \""error\"": {\n    \""code\"": 404,\n    \""message\"": \""Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-sonnet-4-5` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\"",\n    \""status\"": \""NOT_FOUND\""\n  }\n}\n. Received Model Group=claude-sonnet-4-5\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""404""}}"
+"claude-sonnet-4-6","OK","200","3059","ok","",""
+"deepseek-ocr-maas","FALHOU","400","519","","litellm.BadRequestError: Vertex_aiException BadRequestError - [{
+  ""error"": {
+    ""code"": 400,
+    ""message"": ""Publisher model 'deepseek-ai/deepseek-ocr-maas' in region 'us-central1' is only available via global endpoint."",
+    ""status"": ""FAILED_PRECONDITION""
+  }
+}
+]. Received Model Group=deepseek-ocr-maas
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.BadRequestError: Vertex_aiException BadRequestError - [{\n  \""error\"": {\n    \""code\"": 400,\n    \""message\"": \""Publisher model 'deepseek-ai/deepseek-ocr-maas' in region 'us-central1' is only available via global endpoint.\"",\n    \""status\"": \""FAILED_PRECONDITION\""\n  }\n}\n]. Received Model Group=deepseek-ocr-maas\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""400""}}"
+"deepseek-v3.2-maas","OK","200","1284","ok","",""
+"gemini-2.5-flash","OK","200","4360",,"",""
+"gemini-2.5-flash-lite","OK","200","1109","ok","",""
+"gemini-2.5-flash-lite-preview-09-2025","OK","200","921","ok","",""
+"gemini-2.5-flash-preview-09-2025","FALHOU","404","521","","litellm.NotFoundError: Vertex_aiException - {
+  ""error"": {
+    ""code"": 404,
+    ""message"": ""Publisher model `projects/receita-498317/locations/global/publishers/google/models/gemini-2.5-flash-preview-09-2025` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations."",
+    ""status"": ""NOT_FOUND""
+  }
+}
+. Received Model Group=gemini-2.5-flash-preview-09-2025
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.NotFoundError: Vertex_aiException - {\n  \""error\"": {\n    \""code\"": 404,\n    \""message\"": \""Publisher model `projects/receita-498317/locations/global/publishers/google/models/gemini-2.5-flash-preview-09-2025` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\"",\n    \""status\"": \""NOT_FOUND\""\n  }\n}\n. Received Model Group=gemini-2.5-flash-preview-09-2025\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""404""}}"
+"gemini-2.5-pro","OK","200","1539",,"",""
+"gemini-3.1-flash-lite","OK","200","1419","ok","",""
+"gemini-3.1-pro-preview","FALHOU","0","30164","","curl.exe : curl: (56) schannel: server closed abruptly (missing close_notify)
+No D:\IA-LAB\testar-modelos-litellm.ps1:197 caractere:22
++         $rawOutput = & curl.exe @args 2>&1
++                      ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (curl: (56) scha...g close_notify):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError","curl.exe : curl: (56) schannel: server closed abruptly (missing close_notify)
+No D:\IA-LAB\testar-modelos-litellm.ps1:197 caractere:22
++         $rawOutput = & curl.exe @args 2>&1
++                      ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (curl: (56) scha...g close_notify):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError"
+"gemini-3.5-flash","OK","200","1490","ok","",""
+"gemini-live-2.5-flash","FALHOU","400","1352","","litellm.BadRequestError: Vertex_aiException BadRequestError - {
+  ""error"": {
+    ""code"": 400,
+    ""message"": ""gemini-live-2.5-flash is not supported in the generateContent API."",
+    ""status"": ""INVALID_ARGUMENT""
+  }
+}
+. Received Model Group=gemini-live-2.5-flash
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.BadRequestError: Vertex_aiException BadRequestError - {\n  \""error\"": {\n    \""code\"": 400,\n    \""message\"": \""gemini-live-2.5-flash is not supported in the generateContent API.\"",\n    \""status\"": \""INVALID_ARGUMENT\""\n  }\n}\n. Received Model Group=gemini-live-2.5-flash\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""400""}}"
+"gemma-4-26b-a4b-it-maas","FALHOU","500","6549","","litellm.InternalServerError: Vertex_aiException InternalServerError - 501 Received http2 header with status: 404. Received Model Group=gemma-4-26b-a4b-it-maas
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.InternalServerError: Vertex_aiException InternalServerError - 501 Received http2 header with status: 404. Received Model Group=gemma-4-26b-a4b-it-maas\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""500""}}"
+"glm-4.7-maas","OK","200","3379",,"",""
+"glm-5-maas","OK","200","1109",,"",""
+"gpt-oss-120b-maas","OK","200","1001",,"",""
+"gpt-oss-20b-maas","OK","200","1938",,"",""
+"kimi-k2-thinking-maas","FALHOU","500","7636","","litellm.InternalServerError: Vertex_aiException InternalServerError - 501 Received http2 header with status: 404. Received Model Group=kimi-k2-thinking-maas
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.InternalServerError: Vertex_aiException InternalServerError - 501 Received http2 header with status: 404. Received Model Group=kimi-k2-thinking-maas\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""500""}}"
+"llama-3.3-70b-instruct-maas","FALHOU","404","2663","","litellm.NotFoundError: Vertex_aiException - [{
+  ""error"": {
+    ""code"": 404,
+    ""message"": ""Publisher model `projects/615093722353/locations/global/publishers/meta/models/llama-3.3-70b-instruct-maas` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations."",
+    ""status"": ""NOT_FOUND""
+  }
+}
+]. Received Model Group=llama-3.3-70b-instruct-maas
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.NotFoundError: Vertex_aiException - [{\n  \""error\"": {\n    \""code\"": 404,\n    \""message\"": \""Publisher model `projects/615093722353/locations/global/publishers/meta/models/llama-3.3-70b-instruct-maas` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\"",\n    \""status\"": \""NOT_FOUND\""\n  }\n}\n]. Received Model Group=llama-3.3-70b-instruct-maas\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""404""}}"
+"llama-4-maverick-17b-128e-instruct-maas","FALHOU","404","612","","litellm.NotFoundError: Vertex_aiException - [{
+  ""error"": {
+    ""code"": 404,
+    ""message"": ""Publisher model `projects/615093722353/locations/global/publishers/meta/models/llama-4-maverick-17b-128e-instruct-maas` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations."",
+    ""status"": ""NOT_FOUND""
+  }
+}
+]. Received Model Group=llama-4-maverick-17b-128e-instruct-maas
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.NotFoundError: Vertex_aiException - [{\n  \""error\"": {\n    \""code\"": 404,\n    \""message\"": \""Publisher model `projects/615093722353/locations/global/publishers/meta/models/llama-4-maverick-17b-128e-instruct-maas` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\"",\n    \""status\"": \""NOT_FOUND\""\n  }\n}\n]. Received Model Group=llama-4-maverick-17b-128e-instruct-maas\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""404""}}"
+"llama-4-scout-17b-16e-instruct-maas","FALHOU","404","599","","litellm.NotFoundError: Vertex_aiException - [{
+  ""error"": {
+    ""code"": 404,
+    ""message"": ""Publisher model `projects/615093722353/locations/global/publishers/meta/models/llama-4-scout-17b-16e-instruct-maas` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations."",
+    ""status"": ""NOT_FOUND""
+  }
+}
+]. Received Model Group=llama-4-scout-17b-16e-instruct-maas
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.NotFoundError: Vertex_aiException - [{\n  \""error\"": {\n    \""code\"": 404,\n    \""message\"": \""Publisher model `projects/615093722353/locations/global/publishers/meta/models/llama-4-scout-17b-16e-instruct-maas` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\"",\n    \""status\"": \""NOT_FOUND\""\n  }\n}\n]. Received Model Group=llama-4-scout-17b-16e-instruct-maas\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""404""}}"
+"minimax-m2-maas","FALHOU","500","8835","","litellm.InternalServerError: Vertex_aiException InternalServerError - 501 Received http2 header with status: 404. Received Model Group=minimax-m2-maas
+Available Model Group Fallbacks=None","{""error"":{""message"":""litellm.InternalServerError: Vertex_aiException InternalServerError - 501 Received http2 header with status: 404. Received Model Group=minimax-m2-maas\nAvailable Model Group Fallbacks=None"",""type"":null,""param"":null,""code"":""500""}}"
+"qwen3-235b-a22b-instruct-2507-maas","OK","200","794","ok","",""
+"qwen3-coder-480b-a35b-instruct-maas","OK","200","2607","ok","",""
+"qwen3-next-80b-a3b-instruct-maas","OK","200","766","ok","",""
+"qwen3-next-80b-a3b-thinking-maas","OK","200","1028",,"",""

@@ -3,6 +3,12 @@ $ErrorActionPreference = "Stop"
 $vmName = "ia-lab"
 $listenPort = 3000
 $connectPort = 3000
+$multipassExe = "C:\Program Files\Multipass\bin\multipass.exe"
+$vmComposeDir = "/home/ubuntu/ia-lab-docker"
+
+if (-not (Test-Path -LiteralPath $multipassExe)) {
+    throw "Multipass nao encontrado: $multipassExe"
+}
 
 function Test-IsSystemAccount {
     return ([Security.Principal.WindowsIdentity]::GetCurrent().Name -eq "NT AUTHORITY\SYSTEM")
@@ -24,7 +30,7 @@ function Wait-ForMultipassService {
 
         if ($service.Status -eq "Running") {
             try {
-                $null = multipass list 2>$null
+                $null = & $multipassExe list 2>$null
                 return
             }
             catch {
@@ -58,7 +64,7 @@ function Get-MultipassState {
     )
 
     try {
-        $stateLine = multipass list | Select-String ("^\s*{0}\s+" -f [regex]::Escape($Name)) | Select-Object -First 1
+        $stateLine = & $multipassExe list | Select-String ("^\s*{0}\s+" -f [regex]::Escape($Name)) | Select-Object -First 1
     }
     catch {
         return $null
@@ -76,6 +82,47 @@ function Get-MultipassState {
     return $null
 }
 
+function Ensure-OpenWebUiContainer {
+    param(
+        [string]$Name
+    )
+
+    $containerStatus = $null
+
+    try {
+        $containerStatus = (& $multipassExe exec $Name -- sh -lc "docker inspect -f '{{.State.Status}}' open-webui 2>/dev/null").Trim()
+    }
+    catch {
+        $containerStatus = $null
+    }
+
+    if (-not $containerStatus) {
+        Write-Host "Container open-webui ausente. Recriando via Docker Compose..."
+        $composeCheck = & $multipassExe exec $Name -- sh -lc "test -f $vmComposeDir/docker-compose.yml && test -f $vmComposeDir/.env"
+        if ($LASTEXITCODE -ne 0) {
+            throw "Compose do Open WebUI nao encontrado em $vmComposeDir. Execute scripts\\setup\\rebuild_multipass_vm.ps1 para provisionar a VM."
+        }
+
+        & $multipassExe exec $Name -- sh -lc "docker volume create open-webui >/dev/null 2>&1 || true; cd $vmComposeDir && docker compose up -d open-webui"
+        if ($LASTEXITCODE -ne 0) {
+            throw "Falha ao recriar open-webui via Docker Compose em $vmComposeDir"
+        }
+
+        return
+    }
+
+    if ($containerStatus -eq "running") {
+        Write-Host "Container open-webui ja esta running."
+        return
+    }
+
+    Write-Host "Container open-webui esta $containerStatus. Iniciando..."
+    & $multipassExe exec $Name -- sh -lc "docker start open-webui >/dev/null"
+    if ($LASTEXITCODE -ne 0) {
+        throw "Falha ao iniciar o container open-webui"
+    }
+}
+
 Write-Host "Aguardando o servico Multipass ficar disponivel..."
 Wait-ForMultipassService
 
@@ -86,7 +133,7 @@ if ($state -eq "Running") {
     Write-Host "VM $vmName ja esta Running."
 }
 else {
-    multipass start $vmName
+    & $multipassExe start $vmName
 }
 
 Write-Host "Aguardando VM ficar Running..."
@@ -102,11 +149,14 @@ if ((Get-MultipassState $vmName) -ne "Running") {
     throw "VM $vmName nao entrou em estado Running"
 }
 
+Write-Host "Garantindo que o container open-webui esteja em execucao..."
+Ensure-OpenWebUiContainer -Name $vmName
+
 Write-Host "Obtendo IP da VM..."
 
 $vmIp = $null
 for ($i = 1; $i -le 30; $i++) {
-    $ipv4Line = multipass info $vmName | Select-String "^\s*IPv4:" | Select-Object -First 1
+    $ipv4Line = & $multipassExe info $vmName | Select-String "^\s*IPv4:" | Select-Object -First 1
     if ($ipv4Line) {
         $vmIp = (($ipv4Line.ToString() -split ":", 2)[1]).Trim()
     }

@@ -1,4 +1,4 @@
-﻿# Troubleshooting llama.cpp
+# Troubleshooting llama.cpp
 
 ## Porta ocupada
 
@@ -13,10 +13,10 @@ Get-NetTCPConnection -LocalPort 8001,8002,8003 -ErrorAction SilentlyContinue
 Verifique se os arquivos GGUF existem:
 
 ```powershell
-C:\IA-LAB\scripts\llamacpp\healthcheck_llamacpp.ps1
+D:\IA-LAB\scripts\llamacpp\healthcheck_llamacpp.ps1
 ```
 
-Consulte logs em `C:\IA-LAB\scripts\logs\llamacpp`.
+Consulte logs em `D:\IA-LAB\scripts\logs\llamacpp`.
 
 ## Falta de VRAM ou CUDA
 

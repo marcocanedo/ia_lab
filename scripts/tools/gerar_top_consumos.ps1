@@ -154,7 +154,7 @@ $largeRoots = @(
     (Join-Path $userProfile "Downloads"),
     (Join-Path $userProfile "Documents"),
     (Join-Path $userProfile "Desktop"),
-    "C:\IA-LAB"
+    "D:\IA-LAB"
 )
 if ($oneDriveCorp) {
     $largeRoots += (Join-Path $oneDriveCorp "backup")

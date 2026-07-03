@@ -1,0 +1,330 @@
+﻿[
+    {
+        "Modelo":  "all-team-models",
+        "Status":  "FALHOU",
+        "DuracaoMs":  156,
+        "Resposta":  "",
+        "ErroResumo":  "/chat/completions: Invalid model name passed in model=all-team-models. Call `/v1/models` to view available models for your key.",
+        "ErroCompleto":  "{\"error\":{\"message\":\"/chat/completions: Invalid model name passed in model=all-team-models. Call `/v1/models` to view available models for your key.\",\"type\":\"None\",\"param\":\"None\",\"code\":\"400\",\"provider_specific_fields\":{\"error\":\"/chat/completions: Invalid model name passed in model=all-team-models. Call `/v1/models` to view available models for your key.\"}}}"
+    },
+    {
+        "Modelo":  "claude-fable-5",
+        "Status":  "OK",
+        "DuracaoMs":  3700,
+        "Resposta":  "ok",
+        "ErroResumo":  "",
+        "ErroCompleto":  ""
+    },
+    {
+        "Modelo":  "claude-haiku-4-5",
+        "Status":  "FALHOU",
+        "DuracaoMs":  3046,
+        "Resposta":  "",
+        "ErroResumo":  "litellm.NotFoundError: Vertex_aiException - {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-haiku-4-5` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n. Re...",
+        "ErroCompleto":  "{\"error\":{\"message\":\"litellm.NotFoundError: Vertex_aiException - {\\n  \\\"error\\\": {\\n    \\\"code\\\": 404,\\n    \\\"message\\\": \\\"Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-haiku-4-5` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\\\",\\n    \\\"status\\\": \\\"NOT_FOUND\\\"\\n  }\\n}\\n. Received Model Group=claude-haiku-4-5\\nAvailable Model Group Fallbacks=None\",\"type\":null,\"param\":null,\"code\":\"404\"}}"
+    },
+    {
+        "Modelo":  "claude-opus-4",
+        "Status":  "FALHOU",
+        "DuracaoMs":  644,
+        "Resposta":  "",
+        "ErroResumo":  "litellm.NotFoundError: Vertex_aiException - {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-opus-4` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n. Recei...",
+        "ErroCompleto":  "{\"error\":{\"message\":\"litellm.NotFoundError: Vertex_aiException - {\\n  \\\"error\\\": {\\n    \\\"code\\\": 404,\\n    \\\"message\\\": \\\"Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-opus-4` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\\\",\\n    \\\"status\\\": \\\"NOT_FOUND\\\"\\n  }\\n}\\n. Received Model Group=claude-opus-4\\nAvailable Model Group Fallbacks=None\",\"type\":null,\"param\":null,\"code\":\"404\"}}"
+    },
+    {
+        "Modelo":  "claude-opus-4-1",
+        "Status":  "FALHOU",
+        "DuracaoMs":  839,
+        "Resposta":  "",
+        "ErroResumo":  "litellm.NotFoundError: Vertex_aiException - {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-opus-4-1` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n. Rec...",
+        "ErroCompleto":  "{\"error\":{\"message\":\"litellm.NotFoundError: Vertex_aiException - {\\n  \\\"error\\\": {\\n    \\\"code\\\": 404,\\n    \\\"message\\\": \\\"Publisher model `projects/receita-498317/locations/global/publishers/anthropic/models/claude-opus-4-1` was not found or your project does not have access to it. Ensure you are using a valid model name and that the model is available in the specified region. For more information, see: https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations.\\\",\\n    \\\"status\\\": \\\"NOT_FOUND\\\"\\n  }\\n}\\n. Received Model Group=claude-opus-4-1\\nAvailable Model Group Fallbacks=None\",\"type\":null,\"param\":null,\"code\":\"404\"}}"
+    },
+    {
+        "Modelo":  "claude-opus-4-5",
+        "Status":  "FALHOU",
+        "DuracaoMs":  33,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "claude-opus-4-6",
+        "Status":  "FALHOU",
+        "DuracaoMs":  16,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "claude-opus-4-7",
+        "Status":  "FALHOU",
+        "DuracaoMs":  16,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "claude-opus-4-8-high",
+        "Status":  "FALHOU",
+        "DuracaoMs":  15,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "claude-opus-4-8-low",
+        "Status":  "FALHOU",
+        "DuracaoMs":  16,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "claude-opus-4-8-max",
+        "Status":  "FALHOU",
+        "DuracaoMs":  16,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "claude-opus-4-8-medium",
+        "Status":  "FALHOU",
+        "DuracaoMs":  18,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "claude-opus-4-8-xhigh",
+        "Status":  "FALHOU",
+        "DuracaoMs":  17,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "claude-sonnet-4",
+        "Status":  "FALHOU",
+        "DuracaoMs":  18,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "claude-sonnet-4-5",
+        "Status":  "FALHOU",
+        "DuracaoMs":  24,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "claude-sonnet-4-6",
+        "Status":  "FALHOU",
+        "DuracaoMs":  19,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "deepseek-ocr-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  19,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "deepseek-v3.2-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  22,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "gemini-2.5-flash",
+        "Status":  "FALHOU",
+        "DuracaoMs":  10,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "gemini-2.5-flash-lite",
+        "Status":  "FALHOU",
+        "DuracaoMs":  19,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "gemini-2.5-flash-lite-preview-09-2025",
+        "Status":  "FALHOU",
+        "DuracaoMs":  18,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "gemini-2.5-flash-preview-09-2025",
+        "Status":  "FALHOU",
+        "DuracaoMs":  10,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "gemini-2.5-pro",
+        "Status":  "FALHOU",
+        "DuracaoMs":  20,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "gemini-3.1-flash-lite",
+        "Status":  "FALHOU",
+        "DuracaoMs":  16,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "gemini-3.1-pro-preview",
+        "Status":  "FALHOU",
+        "DuracaoMs":  17,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "gemini-3.5-flash",
+        "Status":  "FALHOU",
+        "DuracaoMs":  14,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "gemini-live-2.5-flash",
+        "Status":  "FALHOU",
+        "DuracaoMs":  8,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "gemma-4-26b-a4b-it-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  25,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "glm-4.7-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  11,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "glm-5-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  14,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "gpt-oss-120b-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  17,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "gpt-oss-20b-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  20,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "kimi-k2-thinking-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  17,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "llama-3.3-70b-instruct-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  17,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "llama-4-maverick-17b-128e-instruct-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  15,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "llama-4-scout-17b-16e-instruct-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  17,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "minimax-m2-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  14,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "qwen3-235b-a22b-instruct-2507-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  13,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "qwen3-coder-480b-a35b-instruct-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  9,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "qwen3-next-80b-a3b-instruct-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  14,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    },
+    {
+        "Modelo":  "qwen3-next-80b-a3b-thinking-maas",
+        "Status":  "FALHOU",
+        "DuracaoMs":  8,
+        "Resposta":  "",
+        "ErroResumo":  "O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.",
+        "ErroCompleto":  "System.Net.WebException: O servidor remoto retornou um erro: (407) Autenticação de Proxy Obrigatória.\r\n   em System.Net.HttpWebRequest.GetRequestStream(TransportContext\u0026 context)\r\n   em System.Net.HttpWebRequest.GetRequestStream()\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.SetRequestContent(WebRequest request, String content)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()\r\n   em System.Management.Automation.CommandProcessor.ProcessRecord()"
+    }
+]

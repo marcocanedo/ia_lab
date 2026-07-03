@@ -1,4 +1,4 @@
-﻿# llama.cpp no IA-LAB
+# llama.cpp no IA-LAB
 
 `llama.cpp` foi adicionado como backend local complementar ao Ollama. Ele roda no Windows Host, usa modelos GGUF em disco local e expoe API OpenAI-compatible por modelo.
 
@@ -22,48 +22,48 @@ As portas `8001`, `8002` e `8003` nao devem ser abertas em `10.14.0.226` nem div
 
 ## Diretorios
 
-- Binarios: `C:\IA-LAB\llama.cpp`
-- Modelos: `C:\IA-LAB\models\gguf`
-- Scripts: `C:\IA-LAB\scripts\llamacpp`
-- Logs: `C:\IA-LAB\scripts\logs\llamacpp`
-- Documentacao: `C:\IA-LAB\docs\llamacpp`
+- Binarios: `D:\IA-LAB\llama.cpp`
+- Modelos: `D:\IA-LAB\models\gguf`
+- Scripts: `D:\IA-LAB\scripts\llamacpp`
+- Logs: `D:\IA-LAB\scripts\logs\llamacpp`
+- Documentacao: `D:\IA-LAB\docs\llamacpp`
 
 ## Uso
 
 Instalar binario oficial CUDA:
 
 ```powershell
-C:\IA-LAB\scripts\llamacpp\install_llamacpp.ps1
+D:\IA-LAB\scripts\llamacpp\install_llamacpp.ps1
 ```
 
 Baixar modelos:
 
 ```powershell
-C:\IA-LAB\scripts\llamacpp\download_models.ps1
+D:\IA-LAB\scripts\llamacpp\download_models.ps1
 ```
 
 Iniciar os dois modelos 7B:
 
 ```powershell
-C:\IA-LAB\scripts\llamacpp\start_all_llamacpp.ps1
+D:\IA-LAB\scripts\llamacpp\start_all_llamacpp.ps1
 ```
 
 Iniciar tambem o 14B:
 
 ```powershell
-C:\IA-LAB\scripts\llamacpp\start_all_llamacpp.ps1 -Include14B
+D:\IA-LAB\scripts\llamacpp\start_all_llamacpp.ps1 -Include14B
 ```
 
 Parar processos iniciados pelos scripts:
 
 ```powershell
-C:\IA-LAB\scripts\llamacpp\stop_all_llamacpp.ps1
+D:\IA-LAB\scripts\llamacpp\stop_all_llamacpp.ps1
 ```
 
 Healthcheck:
 
 ```powershell
-C:\IA-LAB\scripts\llamacpp\healthcheck_llamacpp.ps1
+D:\IA-LAB\scripts\llamacpp\healthcheck_llamacpp.ps1
 ```
 
 ## Open WebUI
@@ -73,13 +73,13 @@ O Compose recebeu `ENABLE_OPENAI_API`, `OPENAI_API_BASE_URLS` e `OPENAI_API_KEYS
 Para permitir que o container alcance o Windows sem expor a rede corporativa, aplicar em PowerShell elevado:
 
 ```powershell
-C:\IA-LAB\scripts\llamacpp\configure_llamacpp_vm_access.ps1
+D:\IA-LAB\scripts\llamacpp\configure_llamacpp_vm_access.ps1
 ```
 
 Depois, aplicar a configuracao do Compose:
 
 ```powershell
-C:\IA-LAB\scripts\llamacpp\configure_openwebui_llamacpp.ps1
+D:\IA-LAB\scripts\llamacpp\configure_openwebui_llamacpp.ps1
 ```
 
 Se o Open WebUI ignorar as variaveis por configuracao persistida no banco, configurar manualmente em `Admin Panel > Settings > Connections > OpenAI API`.

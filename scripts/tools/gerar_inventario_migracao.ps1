@@ -273,7 +273,7 @@ foreach ($p in @(
     (Join-Path $userProfile ".kube"),
     (Join-Path $userProfile ".aws"),
     (Join-Path $userProfile ".azure"),
-    "C:\IA-LAB"
+    "D:\IA-LAB"
 )) {
     if (Test-Path -LiteralPath $p) { $roots.Add($p) }
 }
@@ -376,7 +376,7 @@ netstat -ano
     "02_mapear_projetos.ps1" = @'
 $ErrorActionPreference = "Continue"
 Write-Output "Somente leitura: busca projetos e arquivos tecnicos em locais provaveis."
-$roots = @("$env:USERPROFILE\Desktop","$env:USERPROFILE\Documents","$env:USERPROFILE\Downloads","$env:USERPROFILE\OneDrive","$env:USERPROFILE\source","$env:USERPROFILE\projects","$env:USERPROFILE\repos","C:\IA-LAB") | Where-Object { Test-Path -LiteralPath $_ }
+$roots = @("$env:USERPROFILE\Desktop","$env:USERPROFILE\Documents","$env:USERPROFILE\Downloads","$env:USERPROFILE\OneDrive","$env:USERPROFILE\source","$env:USERPROFILE\projects","$env:USERPROFILE\repos","D:\IA-LAB") | Where-Object { Test-Path -LiteralPath $_ }
 foreach ($root in $roots) {
     Get-ChildItem -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue |
         Where-Object { $_.Name -match '(^\.git$|requirements\.txt|pyproject\.toml|environment\.ya?ml|package\.json|docker-compose\.yml|\.ipynb$|\.py$|\.sql$|\.ps1$|\.md$)' } |

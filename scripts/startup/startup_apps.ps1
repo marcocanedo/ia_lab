@@ -11,9 +11,7 @@ Start-Transcript -Path $logFile -Append | Out-Null
 try {
     Write-Host "IA-LAB startup iniciado em $(Get-Date -Format s)"
 
-    $steps = @(
-        "startup_px.ps1"
-    )
+    $steps = @("startup_px.ps1", "startup_ollama.ps1")
 
     foreach ($step in $steps) {
         $path = Join-Path $startupRoot $step
