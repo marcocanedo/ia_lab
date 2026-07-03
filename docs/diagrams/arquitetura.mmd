@@ -1,10 +1,8 @@
-﻿flowchart LR
-    Browser[Browser Windows] --> Local3000[127.0.0.1:3000]
-    Local3000 --> Portproxy[Windows portproxy]
-    Portproxy --> VM3000[VM ia-lab:3000]
-    VM3000 --> Docker[Docker publish]
-    Docker --> WebUI[Open WebUI:8080]
-    WebUI --> Router[Ollama router:11436]
-    Router --> GPU[Ollama GPU:11434]
-    Router --> CPU[Ollama CPU:11435]
-    PX[PX proxy:18080] -. usado para downloads/proxy .-> Windows[Windows Host]
+flowchart LR
+    Browser[Browser / terminal] --> PX[PX 127.0.0.1:18080]
+    PX --> Internet[Internet]
+    Windows[Windows Host] --> Multipass[Multipass service]
+    Multipass --> VM[VM ia-lab]
+    VM --> SSH[SSH / VS Code Remote]
+    VM --> APT[APT via proxy configurado]
+    PX -. proxy corporativo .-> Internet

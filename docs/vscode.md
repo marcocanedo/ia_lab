@@ -22,7 +22,6 @@ Incluem:
 - Python
 - Pylance
 - Jupyter
-- Docker
 - GitHub Actions
 - Mermaid
 
@@ -34,17 +33,18 @@ Host SSH configurado:
 Host ia-lab
     HostName <ip-da-vm-atual>
     User ubuntu
+    Port 22
     IdentityFile C:\Users\01481911775\.ssh\ia_lab_ed25519
     IdentitiesOnly yes
 ```
 
-O script abaixo atualiza automaticamente o IP do host `ia-lab` quando a VM muda de endereco:
+O script abaixo atualiza automaticamente o IP do host `ia-lab` e injeta a chave publica na VM:
 
 ```powershell
 D:\IA-LAB\scripts\startup\update_ssh_config.ps1
 ```
 
-O `startup_vm.ps1` tambem chama esse script durante a inicializacao.
+O `startup_vm.ps1` tambem chama esse script quando roda em uma conta interativa.
 
 ## Python remoto
 

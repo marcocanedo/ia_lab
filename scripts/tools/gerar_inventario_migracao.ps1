@@ -54,7 +54,7 @@ function Get-Recommendation {
 function Get-Category {
     param([string]$Name)
     $n = $Name.ToLowerInvariant()
-    if ($n -match "ollama|open webui|lm studio|cuda|nvidia|torch|tensorflow|hugging|llama|stable diffusion|comfyui|webui") { return "IA/LLM" }
+    if ($n -match "llm|lm studio|cuda|nvidia|torch|tensorflow|hugging|llama|stable diffusion|comfyui|webui|modelos") { return "IA/LLM" }
     if ($n -match "python|git|docker|visual studio code|vscode|node|npm|java|jdk|wsl|powershell|cmake|gcc|mingw|streamlit|postman|anaconda|conda") { return "desenvolvimento" }
     if ($n -match "postgres|mysql|mariadb|sql server|sqlite|redis|mongodb|dbeaver|pgadmin") { return "banco de dados" }
     if ($n -match "driver|windows|microsoft|office|edge|teams|onedrive|security|defender|runtime|redistributable|update") { return "sistema" }
@@ -118,7 +118,7 @@ function Get-ProjectType {
     param([string]$Path)
     $files = @(Get-ChildItem -LiteralPath $Path -File -Force -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Name)
     $allNames = ($files -join " ").ToLowerInvariant()
-    if ($files -contains "docker-compose.yml") { return "Docker/Open WebUI/servico" }
+    if ($files -contains "docker-compose.yml") { return "Docker/servico" }
     if ($files -contains "pyproject.toml" -or $files -contains "requirements.txt" -or $allNames -match "\.py") { return "Python" }
     if ($files -contains "package.json") { return "Node/JavaScript" }
     if ($allNames -match "\.ipynb") { return "Notebooks" }
@@ -131,8 +131,8 @@ function Get-ProjectType {
 function Get-BackupRecommendation {
     param([string]$Path, [string]$Type)
     $p = $Path.ToLowerInvariant()
-    if ($p -match "ia-lab|receita|daaf|saif|malha|auditoria|ollama|webui|streamlit|python|sql") { return "obrigatorio" }
-    if ($Type -in @("Python", "Repositorio Git", "SQL/banco", "PowerShell/automacao", "Docker/Open WebUI/servico")) { return "recomendado" }
+    if ($p -match "ia-lab|receita|daaf|saif|malha|auditoria|webui|streamlit|python|sql") { return "obrigatorio" }
+    if ($Type -in @("Python", "Repositorio Git", "SQL/banco", "PowerShell/automacao", "Docker/servico")) { return "recomendado" }
     return "verificar"
 }
 
@@ -164,7 +164,7 @@ function Find-ProjectCandidates {
                 ($names -contains "Dockerfile") -or
                 (($files | Where-Object { $_.Extension -in @(".ipynb", ".py", ".sql", ".ps1", ".md") }).Count -ge 2)
             )
-            $nameLooksImportant = ($path -match "(?i)ia|llm|ollama|webui|streamlit|receita|daaf|saif|malha|auditoria|python|sql|scripts|notebook|repo|project|source|ssh|codex|vscode|docker|kube|aws|azure")
+            $nameLooksImportant = ($path -match "(?i)ia|llm|webui|streamlit|receita|daaf|saif|malha|auditoria|python|sql|scripts|notebook|repo|project|source|ssh|codex|vscode|docker|kube|aws|azure")
             if ($hasMarker -or ($nameLooksImportant -and $files.Count -gt 0)) {
                 $candidateMap[$path] = $true
             }
@@ -194,16 +194,16 @@ $captures["conda"] = Invoke-Capture "conda env list" { if (Get-Command conda -Er
 $captures["vscode_extensions"] = Invoke-Capture "code extensions" { if (Get-Command code -ErrorAction SilentlyContinue) { code --list-extensions --show-versions } else { "code CLI nao encontrado" } }
 $captures["wsl"] = Invoke-Capture "wsl list" { if (Get-Command wsl -ErrorAction SilentlyContinue) { wsl -l -v } else { "WSL nao encontrado" } }
 $captures["docker"] = Invoke-Capture "docker ps" { if (Get-Command docker -ErrorAction SilentlyContinue) { docker ps -a } else { "Docker CLI nao encontrado no PATH" } }
-$captures["ollama"] = Invoke-Capture "ollama list" { if (Get-Command ollama -ErrorAction SilentlyContinue) { $env:OLLAMA_HOST = "127.0.0.1:11436"; ollama list } else { "Ollama nao encontrado" } }
+$captures["modelos"] = Invoke-Capture "inventario de modelos locais" { "Stack de modelos nao mantido neste laboratorio base" }
 $captures["scheduled_tasks"] = Invoke-Capture "tarefas agendadas IA/dev" {
     Get-ScheduledTask -ErrorAction SilentlyContinue |
-        Where-Object { $_.TaskName -match "IA|LAB|Ollama|Open|Python|Backup|PX|Docker|WSL|Streamlit" -or $_.TaskPath -match "IA|LAB|Ollama|Open|Python|Backup|PX|Docker|WSL|Streamlit" } |
+        Where-Object { $_.TaskName -match "IA|LAB|Python|Backup|PX|Docker|WSL|Streamlit|Model|LLM" -or $_.TaskPath -match "IA|LAB|Python|Backup|PX|Docker|WSL|Streamlit|Model|LLM" } |
         Select-Object TaskName, TaskPath, State | Format-Table -AutoSize
 }
 $captures["ports"] = Invoke-Capture "portas locais" { netstat -ano | Select-String "LISTENING|ESTABLISHED" }
 $captures["env"] = Invoke-Capture "variaveis relevantes" {
     Get-ChildItem Env: |
-        Where-Object { $_.Name -match "OLLAMA|OPENAI|HTTP|HTTPS|PROXY|PYTHON|CONDA|CUDA|DOCKER|WSL|JAVA|PATH|IA|LAB|STREAMLIT" } |
+        Where-Object { $_.Name -match "OPENAI|HTTP|HTTPS|PROXY|PYTHON|CONDA|CUDA|DOCKER|WSL|JAVA|PATH|IA|LAB|STREAMLIT|MODEL|LLM" } |
         Sort-Object Name | Format-Table -AutoSize
 }
 
@@ -253,7 +253,7 @@ foreach ($app in $registryApps) {
 }
 
 $serviceImportant = $serviceRows | Where-Object {
-    $_.DisplayName -match "Ollama|Open|Docker|Postgre|MySQL|Redis|SQL|NVIDIA|CUDA|WSL|Python|Streamlit|IA|LAB|SSH"
+    $_.DisplayName -match "Docker|Postgre|MySQL|Redis|SQL|NVIDIA|CUDA|WSL|Python|Streamlit|Model|IA|LAB|SSH"
 }
 
 $roots = New-Object System.Collections.Generic.List[string]
@@ -268,7 +268,6 @@ foreach ($p in @(
     (Join-Path $userProfile ".ssh"),
     (Join-Path $userProfile ".codex"),
     (Join-Path $userProfile ".vscode"),
-    (Join-Path $userProfile ".ollama"),
     (Join-Path $userProfile ".docker"),
     (Join-Path $userProfile ".kube"),
     (Join-Path $userProfile ".aws"),
@@ -281,7 +280,7 @@ Get-ChildItem -LiteralPath $userProfile -Directory -Force -ErrorAction SilentlyC
     Where-Object { $_.Name -match "(?i)OneDrive|source|project|repo|ia|python|sql|notebook" } |
     ForEach-Object { $roots.Add($_.FullName) }
 Get-ChildItem -LiteralPath "C:\" -Directory -Force -ErrorAction SilentlyContinue |
-    Where-Object { $_.Name -match "(?i)IA|LAB|Python|SQL|Ollama|Open|WebUI|Streamlit|Receita|DAAF|SAIF|Malha|Auditoria|Projet|Repo|Source" } |
+    Where-Object { $_.Name -match "(?i)IA|LAB|Python|SQL|Model|WebUI|Streamlit|Receita|DAAF|SAIF|Malha|Auditoria|Projet|Repo|Source" } |
     ForEach-Object { $roots.Add($_.FullName) }
 
 $projectPaths = Find-ProjectCandidates -Roots ($roots | Select-Object -Unique)
@@ -485,7 +484,7 @@ foreach ($section in $backupSections) {
 $backupLines += "## Excluir ou tratar com cuidado durante copia"
 $backupLines += ""
 $backupLines += '- `node_modules`, `.venv`, `venv`, `__pycache__`, `.mypy_cache`, `.pytest_cache`: normalmente regeneraveis.'
-$backupLines += "- Caches de modelos e blobs do Ollama/Open WebUI: podem ser muito grandes; copiar somente se a nova maquina precisar evitar novo download."
+$backupLines += "- Caches de modelos locais e dados de interfaces web: podem ser muito grandes; copiar somente se a nova maquina precisar evitar novo download."
 $backupLines += "- Dumps e bases fiscais/pessoais: copiar com criptografia e controle de acesso."
 Write-Utf8 (Join-Path $OutputDir "plano_backup.md") $backupLines
 
@@ -562,7 +561,7 @@ $summaryLines += ""
 $summaryLines += '1. Revisar `plano_backup.md` e confirmar destinos de backup.'
 $summaryLines += "2. Separar segredos/chaves em backup protegido."
 $summaryLines += "3. Exportar listas de ambientes Python/Conda e extensoes VS Code."
-$summaryLines += "4. Confirmar se modelos Ollama/Open WebUI serao copiados ou baixados novamente."
+$summaryLines += "4. Confirmar se caches de modelos e dados de interface serao copiados ou baixados novamente."
 $summaryLines += '5. Somente depois do backup validado, revisar `candidatos_desinstalacao.md`.'
 Write-Utf8 (Join-Path $OutputDir "resumo_executivo.md") $summaryLines
 

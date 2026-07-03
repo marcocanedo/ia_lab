@@ -1,6 +1,6 @@
 # IA-LAB
 
-Laboratorio local de IA em Windows com PX, Ollama, Multipass, Docker, Open WebUI e llama.cpp.
+Laboratorio de infraestrutura base em Windows com PX, Multipass, uma VM Ubuntu `ia-lab` e scripts de suporte.
 
 ## Comece aqui
 
@@ -11,35 +11,34 @@ Laboratorio local de IA em Windows com PX, Ollama, Multipass, Docker, Open WebUI
 
 ## Acesso rapido
 
-| Servico | URL |
+| Componente | Endereco |
 | --- | --- |
-| Open WebUI | <http://127.0.0.1:3000> |
-| Ollama router | <http://127.0.0.1:11436> |
-| llama.cpp 7B | <http://127.0.0.1:8001/v1> |
-| llama.cpp coder | <http://127.0.0.1:8002/v1> |
-| llama.cpp 14B | <http://127.0.0.1:8003/v1> |
 | PX | <http://127.0.0.1:18080> |
+| VM Multipass | `multipass list` / `multipass info ia-lab` |
+| SSH na VM | IP atual da VM, porta `22` |
 
 ## Comandos essenciais
 
 ```powershell
 cd D:\IA-LAB
+.\scripts\startup\startup_vm.ps1
+.\scripts\startup\startup_apps.ps1
 .\scripts\maintenance\healthcheck.ps1
 .\scripts\maintenance\watchdog.ps1
 ```
 
 ## Estrutura
 
-- `scripts\startup`: inicializacao do PX, Ollama, VM e Open WebUI.
-- `scripts\maintenance`: healthcheck, watchdog e retencao de logs/relatorios.
-- `scripts\setup`: configuracao de Task Scheduler, proxy, firewall e Git.
+- `scripts\startup`: boot do PX, Multipass e VM.
+- `scripts\maintenance`: healthcheck, watchdog e limpeza de logs.
+- `scripts\setup`: configuracao de Task Scheduler, proxy e reconstruicao da VM.
 - `scripts\tools`: inventario e ferramentas auxiliares.
 - `docs`: portal navegavel e guias tecnicos.
 - `archive`: artefatos historicos preservados fora da operacao diaria.
 
 ## Agendamento
 
-A inicializacao usa duas tarefas:
+As tarefas principais sao:
 
 ```text
 IA-LAB VM Boot       -> scripts\startup\startup_vm.ps1 (SYSTEM, no boot)

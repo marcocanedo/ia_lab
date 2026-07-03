@@ -89,8 +89,8 @@ $cleanupTrigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Sunday -At "23:30
 
 Remove-IaLabLegacyMaintenanceTasks
 
-Register-IaLabTask "IA-LAB Watchdog" "watchdog.ps1" $watchdogTrigger "Reinicia componentes IA-LAB se PX, Ollama ou Open WebUI ficarem indisponiveis."
-Register-IaLabTask "IA-LAB Healthcheck" "healthcheck.ps1" $healthTrigger "Gera relatorio de saude consolidado do IA-LAB."
+Register-IaLabTask "IA-LAB Watchdog" "watchdog.ps1" $watchdogTrigger "Reinicia PX e a VM base se algum deles ficar indisponivel."
+Register-IaLabTask "IA-LAB Healthcheck" "healthcheck.ps1" $healthTrigger "Gera relatorio de saude consolidado do PX, Multipass e da VM base."
 Register-IaLabTask "IA-LAB Cleanup Logs" "cleanup_logs.ps1" $cleanupTrigger "Remove logs e relatorios antigos conforme retencao padrao."
 
 Get-ScheduledTask -TaskName "IA-LAB*" | Select-Object TaskName,State | Format-Table -AutoSize

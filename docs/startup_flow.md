@@ -25,7 +25,7 @@ Gatilhos:
 
 1. `startup_vm.ps1` no boot do host.
 2. `startup_px.ps1` no logon do usuario.
-3. `startup_ollama.ps1` no logon do usuario.
+3. `startup_vm.ps1` novamente no logon para sincronizar SSH e confirmar a VM.
 
 ## Controles implementados
 
@@ -35,15 +35,9 @@ Gatilhos:
 - Log via transcript em `scripts\logs`.
 - Execucao silenciosa via Task Scheduler oculto e PowerShell `-WindowStyle Hidden`.
 - Tarefas antigas desabilitadas para evitar execucao concorrente.
-- Se a VM tiver sido recriada do zero, `startup_vm.ps1` recria o `open-webui` via Compose quando o container ainda nao existir.
 
 ## Race conditions mitigadas
 
-- VM pode mudar de IP a cada boot: `startup_vm.ps1` detecta IP e recria portproxy.
-- Ollama pode demorar para abrir portas: script aguarda ate 60 segundos pelos backends `11434`/`11435` e pelo roteador `11436`.
-- Open WebUI pode demorar a responder: script aguarda porta 3000.
-- Duplo gatilho boot/logon nao duplica processos porque os scripts verificam portas/processos.
-
-## Ollama
-
-`startup_ollama.ps1` configura proxy PX para downloads, inicia o backend GPU em `11434`, o backend CPU em `11435` e o `ollama_router.ps1` em `11436`. O Open WebUI deve consumir somente o roteador.
+- VM pode mudar de IP a cada boot: `startup_vm.ps1` detecta o IP e `update_ssh_config.ps1` sincroniza o acesso.
+- PX pode demorar para abrir a porta `18080`: o script aguarda antes de seguir.
+- Duplo gatilho boot/logon nao duplica processos porque os scripts verificam estado antes de agir.

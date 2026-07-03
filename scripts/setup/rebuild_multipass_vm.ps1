@@ -13,23 +13,11 @@ param(
 $ErrorActionPreference = "Stop"
 
 $repoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$dockerDir = Join-Path $repoRoot "docker"
-$composePath = Join-Path $dockerDir "docker-compose.yml"
-$envPath = Join-Path $dockerDir ".env"
 $multipassExe = "C:\Program Files\Multipass\bin\multipass.exe"
-$vmComposeDir = "/home/ubuntu/ia-lab-docker"
 $cloudInitPath = Join-Path $env:TEMP ("ia-lab-cloud-init-{0}.yaml" -f $VmName)
 
 if (-not (Test-Path -LiteralPath $multipassExe)) {
     throw "Multipass nao encontrado: $multipassExe"
-}
-
-if (-not $BootstrapOnly) {
-    foreach ($requiredPath in @($composePath, $envPath)) {
-        if (-not (Test-Path -LiteralPath $requiredPath)) {
-            throw "Arquivo obrigatorio nao encontrado: $requiredPath"
-        }
-    }
 }
 
 function Invoke-Multipass {
@@ -110,15 +98,6 @@ function Invoke-MultipassLaunchWithCacheRetry {
     }
 }
 
-function Invoke-MultipassExec {
-    param(
-        [string]$Name,
-        [string[]]$Command
-    )
-
-    Invoke-Multipass (@("exec", $Name, "--") + $Command)
-}
-
 function Wait-ForVmRunning {
     param(
         [string]$Name,
@@ -140,11 +119,13 @@ function Wait-ForVmRunning {
 function New-CloudInitFile {
     $cloudInit = @"
 #cloud-config
-package_update: false
-package_upgrade: false
+package_update: true
+packages:
+  - openssh-server
+  - curl
+  - ca-certificates
 runcmd:
-  - mkdir -p /home/ubuntu/ia-lab-docker
-  - chown -R ubuntu:ubuntu /home/ubuntu/ia-lab-docker
+  - systemctl enable --now ssh
 "@
 
     Set-Content -LiteralPath $cloudInitPath -Value $cloudInit -Encoding ASCII
@@ -172,7 +153,7 @@ if ($existingState) {
 New-CloudInitFile
 
 try {
-    Write-Host "Criando VM $VmName com Ubuntu $Image e configuracao confortavel..."
+    Write-Host "Criando VM $VmName com imagem Ubuntu $Image..."
     $launchArguments = @(
         "launch", $Image,
         "--name", $VmName,
@@ -182,58 +163,43 @@ try {
         "--cloud-init", $cloudInitPath
     )
     Invoke-MultipassLaunchWithCacheRetry -LaunchArguments $launchArguments
-
-    Write-Host "Aguardando VM $VmName ficar Running..."
-    Wait-ForVmRunning -Name $VmName
-
-    Write-Host "Configurando proxy APT da VM para usar PX..."
-    & (Join-Path $PSScriptRoot "configure_vm_proxy.ps1") -VmName $VmName -ProxyPort $ProxyPort
-
-    Write-Host "Validando arquivo de proxy dentro da VM..."
-    Invoke-MultipassExec -Name $VmName -Command @("sh", "-lc", "cat /etc/apt/apt.conf.d/95proxy")
-
-    Write-Host "Executando apt-get update via PX..."
-    Invoke-MultipassExec -Name $VmName -Command @("sh", "-lc", "sudo DEBIAN_FRONTEND=noninteractive apt-get update")
-
-    if ($BootstrapOnly) {
-        Write-Output "Bootstrap concluido: VM criada, proxy APT configurado e apt-get update validado."
-        return
-    }
-
-    Write-Host "Instalando pacote base para Docker e SSH..."
-    Invoke-MultipassExec -Name $VmName -Command @("sh", "-lc", "sudo DEBIAN_FRONTEND=noninteractive apt-get install -y docker.io docker-compose-v2 openssh-server curl ca-certificates")
-
-    Write-Host "Habilitando Docker e SSH..."
-    Invoke-MultipassExec -Name $VmName -Command @("sh", "-lc", "sudo systemctl enable --now docker ssh")
-    Invoke-MultipassExec -Name $VmName -Command @("sh", "-lc", "sudo usermod -aG docker ubuntu")
-
-    Write-Host "Preparando diretorio de compose na VM..."
-    Invoke-MultipassExec -Name $VmName -Command @("mkdir", "-p", $vmComposeDir) | Out-Null
-
-    Write-Host "Transferindo compose e .env para a VM..."
-    Invoke-Multipass transfer $composePath "${VmName}:${vmComposeDir}/docker-compose.yml" | Out-Null
-    Invoke-Multipass transfer $envPath "${VmName}:${vmComposeDir}/.env" | Out-Null
-    Invoke-MultipassExec -Name $VmName -Command @("sh", "-lc", "chown ubuntu:ubuntu $vmComposeDir/docker-compose.yml $vmComposeDir/.env") | Out-Null
-
-    Write-Host "Subindo o Open WebUI via Docker Compose..."
-    Invoke-MultipassExec -Name $VmName -Command @("sh", "-lc", "sudo docker volume create open-webui >/dev/null && cd $vmComposeDir && sudo docker compose up -d open-webui")
-    Invoke-MultipassExec -Name $VmName -Command @("sh", "-lc", "sudo docker ps") | Out-Null
-
-    if (-not $SkipSshConfig) {
-        Write-Host "Atualizando configuracao SSH local para VS Code Remote..."
-        & (Join-Path $repoRoot "scripts\startup\update_ssh_config.ps1")
-    }
-
-    Write-Host "Validando VM..."
-    $vmInfo = Invoke-Multipass info $VmName
-    $dockerPs = Invoke-MultipassExec -Name $VmName -Command @("sudo", "docker", "ps")
-
-    Write-Output "VM reconstruida com sucesso."
-    Write-Output ($vmInfo | Out-String).Trim()
-    Write-Output "Containers ativos:"
-    Write-Output ($dockerPs | Out-String).Trim()
-    Write-Output "Proximo passo no host: recriar o portproxy 127.0.0.1:3000 com o script de startup correspondente."
 }
 finally {
     Remove-Item -LiteralPath $cloudInitPath -Force -ErrorAction SilentlyContinue
 }
+
+Write-Host "Aguardando VM $VmName ficar Running..."
+Wait-ForVmRunning -Name $VmName
+
+Write-Host "Configurando proxy APT da VM para usar PX..."
+$pxListening = Test-NetConnection 127.0.0.1 -Port $ProxyPort -InformationLevel Quiet
+if (-not $pxListening) {
+    Write-Host "PX nao esta escutando em 127.0.0.1:$ProxyPort. Executando startup_px.ps1..."
+    & (Join-Path $repoRoot "scripts\startup\startup_px.ps1")
+}
+
+& (Join-Path $PSScriptRoot "configure_vm_proxy.ps1") -VmName $VmName -ProxyPort $ProxyPort
+
+Write-Host "Executando apt-get update via PX..."
+Invoke-Multipass exec $VmName -- sh -lc "sudo DEBIAN_FRONTEND=noninteractive apt-get update"
+
+if ($BootstrapOnly) {
+    Write-Output "Bootstrap concluido: VM criada, proxy APT configurado e apt-get update validado."
+    return
+}
+
+Write-Host "Garantindo o servico SSH na VM..."
+Invoke-Multipass exec $VmName -- sh -lc "sudo systemctl enable --now ssh >/dev/null 2>&1 || true"
+
+if (-not $SkipSshConfig) {
+    Write-Host "Atualizando configuracao SSH local para VS Code Remote..."
+    & (Join-Path $repoRoot "scripts\startup\update_ssh_config.ps1") -VmName $VmName
+}
+
+Write-Host "Validando VM..."
+$vmInfo = Invoke-Multipass info $VmName
+$sshStatus = Invoke-Multipass exec $VmName -- sh -lc "systemctl is-active ssh 2>/dev/null || true"
+
+Write-Output "VM reconstruida com sucesso."
+Write-Output ($vmInfo | Out-String).Trim()
+Write-Output ("SSH na VM: {0}" -f (($sshStatus | Out-String).Trim()))

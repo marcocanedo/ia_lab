@@ -15,84 +15,54 @@ Get-Command opencode
 $env:Path -split ';' | Where-Object { $_ -ieq "$env:APPDATA\npm" }
 ```
 
-## Open WebUI retorna 500
-
-Sintoma observado:
-
-```text
-500: Internal Error
-```
-
-Causas provaveis:
-
-- Open WebUI usando URL antiga do Ollama persistida.
-- Variavel incorreta ou incompleta para endpoint Ollama.
-- Proxy HTTP dentro do container interferindo com chamadas para `10.14.0.226:11436`.
-
-Correcao aplicada:
-
-```bash
-docker rm -f open-webui
-docker run -d \
-  --name open-webui \
-  --restart unless-stopped \
-  -p 3000:8080 \
-  -e ENABLE_OLLAMA_API=true \
-  -e OLLAMA_BASE_URLS=http://10.14.0.226:11436 \
-  -e OLLAMA_BASE_URL=http://10.14.0.226:11436 \
-  -e NO_PROXY=localhost,127.0.0.1,10.14.0.226,172.30.224.1,172.30.0.0/16 \
-  -e HTTP_PROXY= \
-  -e HTTPS_PROXY= \
-  -e ALL_PROXY= \
-  -v open-webui:/app/backend/data \
-  ghcr.io/open-webui/open-webui:main
-```
+## PX nao responde
 
 Validar:
 
 ```powershell
-multipass exec ia-lab -- docker logs open-webui --tail 120
-multipass exec ia-lab -- docker exec open-webui curl --noproxy "*" http://10.14.0.226:11436/api/tags
+Test-NetConnection 127.0.0.1 -Port 18080
+Get-Process px -ErrorAction SilentlyContinue
 ```
 
-## Docker inacessivel no Windows
-
-Docker roda dentro da VM, nao no host Windows. Use:
+Se necessario, rode:
 
 ```powershell
-multipass exec ia-lab -- docker ps
+D:\IA-LAB\scripts\startup\startup_px.ps1
 ```
 
-## Ollama nao aparece no Open WebUI
+## VM `ia-lab` nao sobe
 
-Validar no Windows:
+Validar:
 
 ```powershell
-Test-NetConnection 127.0.0.1 -Port 11434
-Test-NetConnection 127.0.0.1 -Port 11435
-Test-NetConnection 127.0.0.1 -Port 11436
-Invoke-RestMethod http://127.0.0.1:11436/api/tags
+multipass list
+Get-Service Multipass
 ```
 
-Validar dentro do container:
+Se a VM nao estiver `Running`, rode:
 
 ```powershell
-multipass exec ia-lab -- docker exec open-webui curl --noproxy "*" http://10.14.0.226:11436/api/tags
+D:\IA-LAB\scripts\startup\startup_vm.ps1
 ```
 
-## Roteador Ollama indisponivel
-
-Se `11434` e `11435` responderem, mas `11436` falhar, reiniciar apenas o startup do Ollama:
+Se a VM tiver sido apagada, recrie com:
 
 ```powershell
-D:\IA-LAB\scripts\startup\startup_ollama.ps1
+D:\IA-LAB\scripts\setup\rebuild_multipass_vm.ps1 -DeleteExisting
 ```
 
-Validar logs:
+## SSH do host `ia-lab` aponta para IP antigo
+
+Rode:
 
 ```powershell
-Get-Content D:\IA-LAB\scripts\logs\ollama_router.err.log -Tail 80
-Get-Content D:\IA-LAB\scripts\logs\ollama_router.out.log -Tail 80
+D:\IA-LAB\scripts\startup\update_ssh_config.ps1
+```
+
+Depois valide:
+
+```powershell
+Get-Content (Join-Path $env:USERPROFILE '.ssh\config')
 ```
 
 ## VSCode Remote SSH

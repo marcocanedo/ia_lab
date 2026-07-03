@@ -15,25 +15,11 @@ multipass info ia-lab
 
 ## Networking
 
-A VM recebe IP dinamico na rede Multipass. Nesta etapa, o foco e a provisao da VM e a validacao do acesso via PX. O portproxy do Windows fica para o passo seguinte.
-
-Exemplo:
-
-```text
-172.19.230.126
-```
-
-## Docker
-
-Docker e operado via:
-
-```powershell
-multipass exec ia-lab -- docker ps
-```
+A VM recebe IP dinamico na rede Multipass. O acesso remoto e feito pelo IP atual via SSH.
 
 ## Rebuild do zero
 
-Quando a VM antiga for descartada e o conteudo da aplicacao ja estiver preservado em GitHub, reprovisione a camada Multipass com:
+Quando a VM antiga for descartada, reprovisione a camada Multipass com:
 
 ```powershell
 D:\IA-LAB\scripts\setup\rebuild_multipass_vm.ps1 -DeleteExisting
@@ -43,24 +29,24 @@ O script:
 
 - recria a VM `ia-lab`
 - usa 8 CPUs, 16G de RAM e 120G de disco por padrao
+- inicia o PX se necessario antes do `apt-get update`
+- cria a VM Ubuntu com `openssh-server`
 - configura o proxy APT via PX
 - executa `apt-get update` dentro da VM
-- instala `docker.io`, `docker-compose-v2` e `openssh-server`
-- transfere `D:\IA-LAB\docker\docker-compose.yml` e `D:\IA-LAB\docker\.env`
-- cria o volume externo `open-webui`
-- sobe o `open-webui`
-- atualiza o `~/.ssh/config` local para VS Code Remote
+- sincroniza a configuracao SSH do usuario
 
-Para fazer apenas a etapa inicial desta conversa, sem subir Docker/Open WebUI:
+Para fazer apenas a etapa inicial, sem atualizar a configuracao SSH local:
 
 ```powershell
 D:\IA-LAB\scripts\setup\rebuild_multipass_vm.ps1 -DeleteExisting -BootstrapOnly
 ```
 
-## Snapshots
+## SSH
+
+Depois de criar ou recriar a VM, rode:
 
 ```powershell
-D:\IA-LAB\scripts\maintenance\snapshot_multipass.ps1
+D:\IA-LAB\scripts\startup\update_ssh_config.ps1
 ```
 
-Antes de upgrades maiores, criar snapshot manual e validar espaco em disco.
+Isso atualiza `~\.ssh\config` e injeta a chave publica na VM.
