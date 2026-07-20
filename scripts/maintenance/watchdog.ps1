@@ -84,7 +84,28 @@ Write-Log "Watchdog base iniciado"
 
 if (-not (Test-PortQuiet 18080)) {
     Write-Log "PX indisponivel; executando startup_px.ps1"
-    & (Join-Path $startupRoot "startup_px.ps1")
+    try {
+        & (Join-Path $startupRoot "startup_px.ps1")
+    }
+    catch {
+        Write-Log "Falha ao iniciar o PX: $($_.Exception.Message)"
+    }
+}
+
+if (Test-PortQuiet 18080) {
+    $windowsProxyScript = Join-Path $startupRoot "sync_windows_proxy.ps1"
+    if (Test-Path -LiteralPath $windowsProxyScript) {
+        try {
+            & $windowsProxyScript | Out-Null
+            Write-Log "Proxy dos aplicativos Windows sincronizado com o PX"
+        }
+        catch {
+            Write-Log "Falha ao sincronizar o proxy dos aplicativos Windows: $($_.Exception.Message)"
+        }
+    }
+}
+else {
+    Write-Log "Proxy dos aplicativos Windows nao foi alterado porque o PX continua indisponivel"
 }
 
 $vmName = "ia-lab"

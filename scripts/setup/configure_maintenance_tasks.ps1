@@ -77,12 +77,12 @@ function Register-IaLabTask {
         -Force | Out-Null
 }
 
-$watchdogTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).Date.AddMinutes(5) `
-    -RepetitionInterval (New-TimeSpan -Minutes 5) `
+$watchdogTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(15) `
+    -RepetitionInterval (New-TimeSpan -Minutes 15) `
     -RepetitionDuration (New-TimeSpan -Days 3650)
 
-$healthTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).Date.AddMinutes(10) `
-    -RepetitionInterval (New-TimeSpan -Minutes 15) `
+$healthTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(30) `
+    -RepetitionInterval (New-TimeSpan -Minutes 60) `
     -RepetitionDuration (New-TimeSpan -Days 3650)
 
 $cleanupTrigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Sunday -At "23:30"

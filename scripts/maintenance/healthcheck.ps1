@@ -100,15 +100,39 @@ function Get-VmIp {
 
 function Test-VmExec {
     param(
-        [string]$Name
+        [string]$Name,
+        [string]$VmIp
     )
 
-    $output = & $script:MultipassExe exec $Name -- true 2>&1
+    $previousErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = "SilentlyContinue"
+    try {
+        $output = & $script:MultipassExe exec $Name -- true 2>&1
+    }
+    finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+
     if ($LASTEXITCODE -eq 0) {
         return New-Check "Multipass exec" "OK" "$Name respondeu"
     }
 
-    return New-Check "Multipass exec" "FAIL" ($output | Out-String).Trim()
+    $detail = ($output | Out-String).Trim()
+    if ($VmIp) {
+        try {
+            if (Test-NetConnection $VmIp -Port 22 -InformationLevel Quiet) {
+                return New-Check "Multipass exec" "WARN" "Falhou, mas SSH direto em ${VmIp} funciona"
+            }
+        }
+        catch {
+        }
+    }
+
+    if (-not $detail) {
+        $detail = "Multipass exec indisponivel"
+    }
+
+    return New-Check "Multipass exec" "FAIL" $detail
 }
 
 $script:MultipassExe = Get-MultipassExecutable
@@ -116,15 +140,13 @@ $checks = New-Object System.Collections.Generic.List[object]
 
 $checks.Add((Test-Port "PX port" "127.0.0.1" 18080))
 
-$pxProcesses = @(Get-Process -Name "px" -ErrorAction SilentlyContinue)
-if ($pxProcesses.Count -eq 1) {
-    $checks.Add((New-Check "PX process" "OK" "1 process detected"))
-}
-elseif ($pxProcesses.Count -gt 1) {
-    $checks.Add((New-Check "PX process" "WARN" "$($pxProcesses.Count) processes detected"))
+$pxListeners = @(Get-NetTCPConnection -LocalPort 18080 -State Listen -ErrorAction SilentlyContinue)
+if ($pxListeners.Count -gt 0) {
+    $pxListenerPids = @($pxListeners | Select-Object -ExpandProperty OwningProcess -Unique)
+    $checks.Add((New-Check "PX listener" "OK" ("Port 18080 owned by PID(s): {0}" -f ($pxListenerPids -join ", "))))
 }
 else {
-    $checks.Add((New-Check "PX process" "FAIL" "No process detected"))
+    $checks.Add((New-Check "PX listener" "FAIL" "No listener detected on port 18080"))
 }
 
 $multipassService = Get-Service -Name Multipass -ErrorAction SilentlyContinue
@@ -138,10 +160,12 @@ else {
     $checks.Add((New-Check "Multipass service" "FAIL" "Service not found"))
 }
 
+$vmIp = Get-VmIp -Name $vmName
+
 $vmState = Get-MultipassState -Name $vmName
 if ($vmState -eq "Running") {
     $checks.Add((New-Check "VM state" "OK" "$vmName Running"))
-    $checks.Add((Test-VmExec -Name $vmName))
+    $checks.Add((Test-VmExec -Name $vmName -VmIp $vmIp))
 }
 elseif ($vmState) {
     $checks.Add((New-Check "VM state" "FAIL" "$vmName $vmState"))
@@ -150,15 +174,14 @@ else {
     $checks.Add((New-Check "VM state" "FAIL" "VM not found"))
 }
 
-$vmIp = Get-VmIp -Name $vmName
 if ($vmIp) {
     $checks.Add((New-Check "VM IP" "OK" $vmIp))
     try {
         if (Test-NetConnection $vmIp -Port 22 -InformationLevel Quiet) {
-            $checks.Add((New-Check "VM SSH" "OK" "$vmIp:22 reachable"))
+            $checks.Add((New-Check "VM SSH" "OK" "${vmIp}:22 reachable"))
         }
         else {
-            $checks.Add((New-Check "VM SSH" "FAIL" "$vmIp:22 not reachable"))
+            $checks.Add((New-Check "VM SSH" "FAIL" "${vmIp}:22 not reachable"))
         }
     }
     catch {
@@ -187,7 +210,7 @@ $summary = [pscustomobject]@{
     generated_at = (Get-Date).ToString("s")
     computer = $env:COMPUTERNAME
     checks = $checks
-    status = if (($checks | Where-Object status -eq "FAIL").Count -gt 0) { "FAIL" } elseif (($checks | Where-Object status -eq "WARN").Count -gt 0) { "WARN" } else { "OK" }
+    status = if (@($checks | Where-Object status -eq "FAIL").Count -gt 0) { "FAIL" } elseif (@($checks | Where-Object status -eq "WARN").Count -gt 0) { "WARN" } else { "OK" }
 }
 
 $summary | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 $jsonReport
