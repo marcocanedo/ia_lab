@@ -33,7 +33,7 @@ function Write-Utf8 {
 function Get-Classification {
     param([string]$Name, [string]$Path, [string]$Kind)
     $text = (($Name + " " + $Path + " " + $Kind).ToLowerInvariant())
-    if ($text -match "windows|system32|driver|nvidia|cuda|visual c\+\+|runtime|office|onedrive|ollama|ia-lab|docker|multipass|wsl|python|anaconda|git|vscode|postgres|mysql|redis|sql|security|defender") {
+    if ($text -match "windows|system32|driver|nvidia|cuda|visual c\+\+|runtime|office|onedrive|ia-lab|docker|multipass|wsl|python|anaconda|git|vscode|postgres|mysql|redis|sql|security|defender") {
         return "manter"
     }
     if ($text -match "cache|temp|tmp|download|installer|old|backup|logs|node_modules|__pycache__|webex|binance|buds|rstudio|teradata|sped") {
@@ -154,7 +154,7 @@ $largeRoots = @(
     (Join-Path $userProfile "Downloads"),
     (Join-Path $userProfile "Documents"),
     (Join-Path $userProfile "Desktop"),
-    "C:\IA-LAB"
+    "D:\IA-LAB"
 )
 if ($oneDriveCorp) {
     $largeRoots += (Join-Path $oneDriveCorp "backup")

@@ -1,10 +1,11 @@
-﻿flowchart TD
-    Startup[IA-LAB Startup] --> PX[PX]
-    Startup --> Ollama[Ollama]
-    Startup --> VM[Multipass ia-lab]
-    VM --> Docker[Docker]
-    Docker --> WebUI[Open WebUI]
-    WebUI --> Ollama
-    VM --> Portproxy[Windows portproxy]
-    Portproxy --> Browser[Browser]
-    PX --> Downloads[Downloads corporativos]
+flowchart TD
+    Startup[Startup tasks] --> PX[PX]
+    Startup --> VM[Multipass / VM ia-lab]
+    VM --> SSH[SSH config]
+    VM --> APT[Proxy APT]
+    Maintenance[Maintenance tasks] --> Health[Healthcheck]
+    Maintenance --> Watchdog[Watchdog]
+    Health --> PX
+    Health --> VM
+    Watchdog --> PX
+    Watchdog --> VM

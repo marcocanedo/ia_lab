@@ -1,11 +1,9 @@
-param(
-    [string[]]$MonitoredProcesses = @("px", "ollama")
-)
-
 $ErrorActionPreference = "Continue"
 
-$root = "C:\IA-LAB"
-$reportDir = Join-Path $root "backups\reports"
+$vmName = "ia-lab"
+$multipassExe = "C:\Program Files\Multipass\bin\multipass.exe"
+$scriptsRoot = Split-Path -Parent $PSScriptRoot
+$reportDir = Join-Path $scriptsRoot "logs\healthcheck"
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
 $jsonReport = Join-Path $reportDir "healthcheck_$timestamp.json"
 $textReport = Join-Path $reportDir "healthcheck_$timestamp.txt"
@@ -27,6 +25,19 @@ function New-Check {
     }
 }
 
+function Get-MultipassExecutable {
+    if (Test-Path -LiteralPath $multipassExe) {
+        return $multipassExe
+    }
+
+    $command = Get-Command multipass -ErrorAction SilentlyContinue
+    if ($command) {
+        return $command.Source
+    }
+
+    throw "Multipass nao encontrado."
+}
+
 function Test-Port {
     param(
         [string]$Name,
@@ -46,118 +57,166 @@ function Test-Port {
     }
 }
 
-function Invoke-CommandText {
-    param([string]$Command)
-
-    try {
-        $output = powershell.exe -NoProfile -NonInteractive -WindowStyle Hidden -Command $Command 2>&1
-        return @{
-            exit_code = $LASTEXITCODE
-            output = ($output -join "`n")
-        }
-    }
-    catch {
-        return @{
-            exit_code = 1
-            output = $_.Exception.Message
-        }
-    }
-}
-
-function Add-ProcessCheck {
+function Get-MultipassState {
     param(
-        [System.Collections.Generic.List[object]]$CheckList,
-        [string]$Name,
-        [int]$MinCount = 1,
-        [int]$MaxCount = 1
+        [string]$Name
     )
 
-    $processes = @(Get-Process -Name $Name -ErrorAction SilentlyContinue)
-    $count = $processes.Count
-
-    if ($count -lt $MinCount) {
-        $CheckList.Add((New-Check "$Name process" "FAIL" "No process detected"))
-        return
+    $stateLine = & $script:MultipassExe list | Select-String ("^\s*{0}\s+" -f [regex]::Escape($Name)) | Select-Object -First 1
+    if (-not $stateLine) {
+        return $null
     }
 
-    if ($count -gt $MaxCount) {
-        $CheckList.Add((New-Check "$Name process" "WARN" "$count processes detected"))
-        return
+    $tokens = $stateLine.ToString().Trim() -split "\s+"
+    if ($tokens.Count -lt 2) {
+        return $null
     }
 
-    $CheckList.Add((New-Check "$Name process" "OK" "$count process(es) detected"))
+    return $tokens[1]
 }
 
+function Get-VmIp {
+    param(
+        [string]$Name
+    )
+
+    $info = & $script:MultipassExe info $Name 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        return $null
+    }
+
+    $ipv4Line = $info | Select-String "^\s*IPv4:" | Select-Object -First 1
+    if (-not $ipv4Line) {
+        return $null
+    }
+
+    $value = (($ipv4Line.ToString() -split ":", 2)[1]).Trim()
+    if (-not $value) {
+        return $null
+    }
+
+    return ($value -split "\s+")[0]
+}
+
+function Test-VmExec {
+    param(
+        [string]$Name,
+        [string]$VmIp
+    )
+
+    $previousErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = "SilentlyContinue"
+    try {
+        $output = & $script:MultipassExe exec $Name -- true 2>&1
+    }
+    finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+
+    if ($LASTEXITCODE -eq 0) {
+        return New-Check "Multipass exec" "OK" "$Name respondeu"
+    }
+
+    $detail = ($output | Out-String).Trim()
+    if ($VmIp) {
+        try {
+            if (Test-NetConnection $VmIp -Port 22 -InformationLevel Quiet) {
+                return New-Check "Multipass exec" "WARN" "Falhou, mas SSH direto em ${VmIp} funciona"
+            }
+        }
+        catch {
+        }
+    }
+
+    if (-not $detail) {
+        $detail = "Multipass exec indisponivel"
+    }
+
+    return New-Check "Multipass exec" "FAIL" $detail
+}
+
+$script:MultipassExe = Get-MultipassExecutable
 $checks = New-Object System.Collections.Generic.List[object]
 
 $checks.Add((Test-Port "PX port" "127.0.0.1" 18080))
-$checks.Add((Test-Port "Ollama GPU port" "127.0.0.1" 11434))
-$checks.Add((Test-Port "Ollama CPU port" "127.0.0.1" 11435))
-$checks.Add((Test-Port "Ollama router port" "127.0.0.1" 11436))
-$checks.Add((Test-Port "Open WebUI portproxy" "127.0.0.1" 3000))
 
-try {
-    $ollamaTags = Invoke-RestMethod -Uri "http://127.0.0.1:11436/api/tags" -TimeoutSec 10
-    $modelCount = @($ollamaTags.models).Count
-    $checks.Add((New-Check "Ollama API" "OK" "$modelCount models available"))
-}
-catch {
-    $checks.Add((New-Check "Ollama API" "FAIL" $_.Exception.Message))
-}
-
-try {
-    $webuiConfig = Invoke-RestMethod -Uri "http://127.0.0.1:3000/api/config" -TimeoutSec 10
-    $checks.Add((New-Check "Open WebUI API" "OK" "version $($webuiConfig.version)"))
-}
-catch {
-    $checks.Add((New-Check "Open WebUI API" "FAIL" $_.Exception.Message))
-}
-
-$multipass = Invoke-CommandText "multipass info ia-lab"
-if ($multipass.exit_code -eq 0 -and $multipass.output -match "State:\s+Running") {
-    $checks.Add((New-Check "Multipass VM ia-lab" "OK" "VM running"))
+$pxListeners = @(Get-NetTCPConnection -LocalPort 18080 -State Listen -ErrorAction SilentlyContinue)
+if ($pxListeners.Count -gt 0) {
+    $pxListenerPids = @($pxListeners | Select-Object -ExpandProperty OwningProcess -Unique)
+    $checks.Add((New-Check "PX listener" "OK" ("Port 18080 owned by PID(s): {0}" -f ($pxListenerPids -join ", "))))
 }
 else {
-    $checks.Add((New-Check "Multipass VM ia-lab" "FAIL" $multipass.output))
+    $checks.Add((New-Check "PX listener" "FAIL" "No listener detected on port 18080"))
 }
 
-$docker = Invoke-CommandText "multipass exec ia-lab -- docker inspect -f '{{.State.Health.Status}} {{.State.Status}}' open-webui"
-if ($docker.exit_code -eq 0 -and $docker.output -match "healthy\s+running") {
-    $checks.Add((New-Check "Docker Open WebUI" "OK" $docker.output.Trim()))
+$multipassService = Get-Service -Name Multipass -ErrorAction SilentlyContinue
+if ($multipassService -and $multipassService.Status -eq "Running") {
+    $checks.Add((New-Check "Multipass service" "OK" "Running"))
+}
+elseif ($multipassService) {
+    $checks.Add((New-Check "Multipass service" "FAIL" $multipassService.Status))
 }
 else {
-    $checks.Add((New-Check "Docker Open WebUI" "FAIL" $docker.output))
+    $checks.Add((New-Check "Multipass service" "FAIL" "Service not found"))
 }
 
-$portproxy = Invoke-CommandText "netsh interface portproxy show all"
-if ($portproxy.output -match "127\.0\.0\.1\s+3000\s+\d+\.\d+\.\d+\.\d+\s+3000") {
-    $checks.Add((New-Check "Windows portproxy" "OK" "127.0.0.1:3000 mapped to VM:3000"))
+$vmIp = Get-VmIp -Name $vmName
+
+$vmState = Get-MultipassState -Name $vmName
+if ($vmState -eq "Running") {
+    $checks.Add((New-Check "VM state" "OK" "$vmName Running"))
+    $checks.Add((Test-VmExec -Name $vmName -VmIp $vmIp))
+}
+elseif ($vmState) {
+    $checks.Add((New-Check "VM state" "FAIL" "$vmName $vmState"))
 }
 else {
-    $checks.Add((New-Check "Windows portproxy" "FAIL" $portproxy.output))
+    $checks.Add((New-Check "VM state" "FAIL" "VM not found"))
 }
 
-foreach ($processName in $MonitoredProcesses) {
-    if ([string]::IsNullOrWhiteSpace($processName)) {
-        continue
+if ($vmIp) {
+    $checks.Add((New-Check "VM IP" "OK" $vmIp))
+    try {
+        if (Test-NetConnection $vmIp -Port 22 -InformationLevel Quiet) {
+            $checks.Add((New-Check "VM SSH" "OK" "${vmIp}:22 reachable"))
+        }
+        else {
+            $checks.Add((New-Check "VM SSH" "FAIL" "${vmIp}:22 not reachable"))
+        }
     }
+    catch {
+        $checks.Add((New-Check "VM SSH" "FAIL" $_.Exception.Message))
+    }
+}
+else {
+    $checks.Add((New-Check "VM IP" "FAIL" "Nao foi possivel detectar o IP da VM"))
+}
 
-    $normalizedName = $processName.Trim()
-    $maxCount = if ($normalizedName -ieq "ollama") { 2 } else { 1 }
-    Add-ProcessCheck -CheckList $checks -Name $normalizedName -MaxCount $maxCount
+$sshConfigPath = Join-Path $env:USERPROFILE ".ssh\config"
+if ($vmIp -and (Test-Path -LiteralPath $sshConfigPath)) {
+    $sshConfig = Get-Content -LiteralPath $sshConfigPath -Raw
+    if ($sshConfig -match "(?ms)^\s*Host\s+$([regex]::Escape($vmName))\s+.*?^\s*HostName\s+$([regex]::Escape($vmIp))\s+") {
+        $checks.Add((New-Check "SSH config" "OK" "$vmName aponta para $vmIp"))
+    }
+    else {
+        $checks.Add((New-Check "SSH config" "FAIL" "Entrada $vmName fora de sincronia"))
+    }
+}
+else {
+    $checks.Add((New-Check "SSH config" "FAIL" "Arquivo de configuracao nao encontrado ou IP ausente"))
 }
 
 $summary = [pscustomobject]@{
     generated_at = (Get-Date).ToString("s")
     computer = $env:COMPUTERNAME
     checks = $checks
-    status = if (($checks | Where-Object status -eq "FAIL").Count -gt 0) { "FAIL" } elseif (($checks | Where-Object status -eq "WARN").Count -gt 0) { "WARN" } else { "OK" }
+    status = if (@($checks | Where-Object status -eq "FAIL").Count -gt 0) { "FAIL" } elseif (@($checks | Where-Object status -eq "WARN").Count -gt 0) { "WARN" } else { "OK" }
 }
 
 $summary | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 $jsonReport
 
 $lines = @()
-$lines += "IA-LAB Healthcheck - $($summary.generated_at)"
+$lines += "IA-LAB Base Healthcheck - $($summary.generated_at)"
 $lines += "Status: $($summary.status)"
 $lines += ""
 foreach ($check in $checks) {

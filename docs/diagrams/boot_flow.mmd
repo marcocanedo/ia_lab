@@ -1,18 +1,12 @@
-﻿sequenceDiagram
+sequenceDiagram
     participant TS as Task Scheduler
-    participant Apps as startup_apps.ps1
-    participant PX as startup_px.ps1
-    participant Ollama as startup_ollama.ps1
     participant VM as startup_vm.ps1
-    participant Web as Open WebUI
+    participant PX as startup_px.ps1
+    participant Apps as startup_apps.ps1
 
-    TS->>Apps: boot/logon + 30s
-    Apps->>PX: iniciar/validar porta 18080
-    PX-->>Apps: OK
-    Apps->>Ollama: iniciar/validar portas 11434/11435/11436
-    Ollama-->>Apps: OK
-    Apps->>VM: iniciar Multipass ia-lab
-    VM->>VM: detectar IP
-    VM->>VM: recriar portproxy 127.0.0.1:3000
-    VM->>Web: validar porta 3000
-    Web-->>Apps: OK
+    TS->>VM: boot + 30s
+    VM->>VM: iniciar Multipass / VM ia-lab
+    VM->>VM: sincronizar SSH
+    TS->>Apps: logon + 20s
+    Apps->>PX: iniciar / validar PX
+    Apps->>VM: revalidar VM e SSH

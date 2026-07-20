@@ -1,4 +1,4 @@
-﻿# Documentacao IA-LAB
+# Documentacao IA-LAB
 
 Use o [portal navegavel](index.md) como ponto de entrada.
 

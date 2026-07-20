@@ -19,32 +19,120 @@ function Test-PortQuiet {
     return Test-NetConnection 127.0.0.1 -Port $Port -InformationLevel Quiet
 }
 
-Write-Log "Watchdog iniciado"
+function Get-MultipassExecutable {
+    $candidate = "C:\Program Files\Multipass\bin\multipass.exe"
+    if (Test-Path -LiteralPath $candidate) {
+        return $candidate
+    }
+
+    $command = Get-Command multipass -ErrorAction SilentlyContinue
+    if ($command) {
+        return $command.Source
+    }
+
+    return $null
+}
+
+function Get-VmState {
+    param([string]$Name)
+
+    $multipassExe = Get-MultipassExecutable
+    if (-not $multipassExe) {
+        return $null
+    }
+
+    $stateLine = & $multipassExe list | Select-String ("^\s*{0}\s+" -f [regex]::Escape($Name)) | Select-Object -First 1
+    if (-not $stateLine) {
+        return $null
+    }
+
+    $tokens = $stateLine.ToString().Trim() -split "\s+"
+    if ($tokens.Count -lt 2) {
+        return $null
+    }
+
+    return $tokens[1]
+}
+
+function Get-VmIp {
+    param([string]$Name)
+
+    $multipassExe = Get-MultipassExecutable
+    if (-not $multipassExe) {
+        return $null
+    }
+
+    $info = & $multipassExe info $Name 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        return $null
+    }
+
+    $ipv4Line = $info | Select-String "^\s*IPv4:" | Select-Object -First 1
+    if (-not $ipv4Line) {
+        return $null
+    }
+
+    $value = (($ipv4Line.ToString() -split ":", 2)[1]).Trim()
+    if (-not $value) {
+        return $null
+    }
+
+    return ($value -split "\s+")[0]
+}
+
+Write-Log "Watchdog base iniciado"
 
 if (-not (Test-PortQuiet 18080)) {
     Write-Log "PX indisponivel; executando startup_px.ps1"
-    & (Join-Path $startupRoot "startup_px.ps1")
+    try {
+        & (Join-Path $startupRoot "startup_px.ps1")
+    }
+    catch {
+        Write-Log "Falha ao iniciar o PX: $($_.Exception.Message)"
+    }
 }
 
-if ((-not (Test-PortQuiet 11434)) -or (-not (Test-PortQuiet 11435)) -or (-not (Test-PortQuiet 11436))) {
-    Write-Log "Ollama indisponivel; executando startup_ollama.ps1"
-    & (Join-Path $startupRoot "startup_ollama.ps1")
+if (Test-PortQuiet 18080) {
+    $windowsProxyScript = Join-Path $startupRoot "sync_windows_proxy.ps1"
+    if (Test-Path -LiteralPath $windowsProxyScript) {
+        try {
+            & $windowsProxyScript | Out-Null
+            Write-Log "Proxy dos aplicativos Windows sincronizado com o PX"
+        }
+        catch {
+            Write-Log "Falha ao sincronizar o proxy dos aplicativos Windows: $($_.Exception.Message)"
+        }
+    }
+}
+else {
+    Write-Log "Proxy dos aplicativos Windows nao foi alterado porque o PX continua indisponivel"
 }
 
-try {
-    Invoke-RestMethod -Uri "http://127.0.0.1:3000/api/config" -TimeoutSec 10 | Out-Null
-    Write-Log "Open WebUI OK"
-}
-catch {
-    Write-Log "Open WebUI falhou: $($_.Exception.Message)"
-    Write-Log "Reiniciando container open-webui na VM ia-lab"
-    multipass exec ia-lab -- docker restart open-webui | Out-Null
-    Start-Sleep -Seconds 15
+$vmName = "ia-lab"
+$vmState = Get-VmState -Name $vmName
+$vmIp = if ($vmState -eq "Running") { Get-VmIp -Name $vmName } else { $null }
+$vmReady = $false
+
+if ($vmState -eq "Running" -and $vmIp) {
+    try {
+        $vmReady = Test-NetConnection $vmIp -Port 22 -InformationLevel Quiet
+    }
+    catch {
+        $vmReady = $false
+    }
 }
 
-if (-not (Test-PortQuiet 3000)) {
-    Write-Log "Portproxy/Open WebUI indisponivel; executando startup_vm.ps1"
-    & (Join-Path $startupRoot "startup_vm.ps1")
+if (-not $vmReady) {
+    Write-Log "VM $vmName indisponivel; executando startup_vm.ps1"
+    try {
+        & (Join-Path $startupRoot "startup_vm.ps1")
+    }
+    catch {
+        Write-Log "Falha ao iniciar a VM base: $($_.Exception.Message)"
+    }
+}
+else {
+    Write-Log "VM $vmName OK"
 }
 
 Write-Log "Watchdog concluido"

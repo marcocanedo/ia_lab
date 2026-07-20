@@ -1,83 +1,68 @@
-﻿# Troubleshooting
+# Troubleshooting
 
-## Open WebUI retorna 500
+## `opencode` nao encontrado no terminal
 
-Sintoma observado:
+Se a instalacao do `opencode` funcionou, mas o comando nao abre de qualquer pasta no Windows:
 
-```text
-500: Internal Error
-```
-
-Causas provaveis:
-
-- Open WebUI usando URL antiga do Ollama persistida.
-- Variavel incorreta ou incompleta para endpoint Ollama.
-- Proxy HTTP dentro do container interferindo com chamadas para `10.14.0.226:11436`.
-
-Correcao aplicada:
-
-```bash
-docker rm -f open-webui
-docker run -d \
-  --name open-webui \
-  --restart unless-stopped \
-  -p 3000:8080 \
-  -e ENABLE_OLLAMA_API=true \
-  -e OLLAMA_BASE_URLS=http://10.14.0.226:11436 \
-  -e OLLAMA_BASE_URL=http://10.14.0.226:11436 \
-  -e NO_PROXY=localhost,127.0.0.1,10.14.0.226,172.30.224.1,172.30.0.0/16 \
-  -e HTTP_PROXY= \
-  -e HTTPS_PROXY= \
-  -e ALL_PROXY= \
-  -v open-webui:/app/backend/data \
-  ghcr.io/open-webui/open-webui:main
-```
+- confirmar que `%APPDATA%\npm` esta no `PATH` do usuario
+- reiniciar o terminal depois de alterar o `PATH`
+- usar o comando `opencode`, nao `opencod`
 
 Validar:
 
 ```powershell
-multipass exec ia-lab -- docker logs open-webui --tail 120
-multipass exec ia-lab -- docker exec open-webui curl --noproxy "*" http://10.14.0.226:11436/api/tags
+Get-Command opencode
+$env:Path -split ';' | Where-Object { $_ -ieq "$env:APPDATA\npm" }
 ```
 
-## Docker inacessivel no Windows
+## PX nao responde
 
-Docker roda dentro da VM, nao no host Windows. Use:
+Validar:
 
 ```powershell
-multipass exec ia-lab -- docker ps
+Test-NetConnection 127.0.0.1 -Port 18080
+Get-Process px -ErrorAction SilentlyContinue
 ```
 
-## Ollama nao aparece no Open WebUI
-
-Validar no Windows:
+Se necessario, rode:
 
 ```powershell
-Test-NetConnection 127.0.0.1 -Port 11434
-Test-NetConnection 127.0.0.1 -Port 11435
-Test-NetConnection 127.0.0.1 -Port 11436
-Invoke-RestMethod http://127.0.0.1:11436/api/tags
+D:\IA-LAB\scripts\startup\startup_px.ps1
 ```
 
-Validar dentro do container:
+## VM `ia-lab` nao sobe
+
+Validar:
 
 ```powershell
-multipass exec ia-lab -- docker exec open-webui curl --noproxy "*" http://10.14.0.226:11436/api/tags
+multipass list
+Get-Service Multipass
 ```
 
-## Roteador Ollama indisponivel
-
-Se `11434` e `11435` responderem, mas `11436` falhar, reiniciar apenas o startup do Ollama:
+Se a VM nao estiver `Running`, rode:
 
 ```powershell
-C:\IA-LAB\scripts\startup\startup_ollama.ps1
+D:\IA-LAB\scripts\startup\startup_vm.ps1
 ```
 
-Validar logs:
+Se a VM tiver sido apagada, recrie com:
 
 ```powershell
-Get-Content C:\IA-LAB\scripts\logs\ollama_router.err.log -Tail 80
-Get-Content C:\IA-LAB\scripts\logs\ollama_router.out.log -Tail 80
+D:\IA-LAB\scripts\setup\rebuild_multipass_vm.ps1 -DeleteExisting
+```
+
+## SSH do host `ia-lab` aponta para IP antigo
+
+Rode:
+
+```powershell
+D:\IA-LAB\scripts\startup\update_ssh_config.ps1
+```
+
+Depois valide:
+
+```powershell
+Get-Content (Join-Path $env:USERPROFILE '.ssh\config')
 ```
 
 ## VSCode Remote SSH

@@ -1,33 +1,20 @@
-﻿# Proxy
+# Proxy
 
-PX roda no Windows Host em:
+## PX
+
+O PX roda no Windows Host em:
 
 ```text
 127.0.0.1:18080
 ```
 
-## Uso
-
-O PX resolve cenarios com proxy NTLM corporativo. Ele deve estar ativo antes de operacoes que precisam baixar dependencias em redes restritas.
-
-## Open WebUI
-
-O container Open WebUI nao deve usar `HTTP_PROXY` para falar com Ollama. A configuracao atual deixa essas variaveis vazias dentro do container e usa `NO_PROXY`.
+Ele deve estar ativo antes de operacoes que precisam baixar dependencias em redes restritas.
 
 ## Proxy da VM Multipass
 
-Problema encontrado: a VM ja teve proxy apt apontando para enderecos antigos, inacessiveis a partir da rede Multipass atual.
+O script `configure_vm_proxy.ps1` escreve o proxy APT dentro da VM `ia-lab` usando o gateway correto da rede Multipass.
 
-Configuracao esperada no estado validado:
-
-```text
-Acquire::http::Proxy "http://172.25.112.1:18080";
-Acquire::https::Proxy "http://172.25.112.1:18080";
-```
-
-O script atual detecta o gateway da VM automaticamente. Use `-Preview` para conferir antes de aplicar.
-
-Arquivo na VM:
+Arquivo aplicado na VM:
 
 ```text
 /etc/apt/apt.conf.d/95proxy
@@ -36,8 +23,10 @@ Arquivo na VM:
 Script:
 
 ```powershell
-C:\IA-LAB\scripts\setup\configure_vm_proxy.ps1
+D:\IA-LAB\scripts\setup\configure_vm_proxy.ps1
 ```
+
+Use `-Preview` para inspecionar o valor antes de aplicar.
 
 ## Git
 

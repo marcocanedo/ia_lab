@@ -1,10 +1,7 @@
 # Logs and reports
 scripts/logs/
-backups/
-docker/backups/
 llama.cpp/
 models/
-scripts/archive/legacy/task_backups/
 *.log
 *.gguf
 *.zip
